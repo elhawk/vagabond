@@ -1,4 +1,4 @@
-interface ITrip {
+export interface ITrip {
     id: number;
     name: string;
     startDate: Date;
@@ -14,7 +14,7 @@ interface ITrip {
     removeItem(id: number) : IExpenditure;
 }
 
-interface IExpenditure {
+export interface IExpenditure {
     id: number;
     dates: Date[];
     amount: number;
