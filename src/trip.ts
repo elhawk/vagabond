@@ -23,10 +23,7 @@ interface IExpenditure {
     location: string;
 }
 
-class Trip implements ITrip{
-    // TODO: make this based on previously saved trips
-    private static _nextId : number = 1;
-
+class Trip implements ITrip {
     id: number;
     expenditures: IExpenditure[] = [];
 
@@ -35,7 +32,8 @@ class Trip implements ITrip{
         public startDate: Date,
         public endDate: Date,
         public budget: number ) {
-           this.id = Trip._nextId++; 
+            // TODO: make id generation use GUIDs
+           this.id = Math.random() * 10000;
     }
 
     addItem(item: IExpenditure): boolean {
@@ -60,7 +58,7 @@ class Trip implements ITrip{
     }
 
     removeItem(id: number): IExpenditure {
-        let index = this.expenditures.findIndex((element) => element.id == id));
+        let index = this.expenditures.findIndex(element => (element.id == id));
         
         // not found
         if (index == -1)
@@ -69,6 +67,19 @@ class Trip implements ITrip{
         return this.expenditures.splice(index, 1)[0];
 
     }
+}
 
+class Expenditure implements IExpenditure {
 
+    id: number;        
+
+    constructor(
+        public dates: Date[],
+        public amount: number,
+        public description: string = "",
+        public category: string = "uncategorized",
+        public location: string = "") {
+        // TODO: make ID generation use GUIDs
+        this.id = Math.random()*10000;
+    }
 }

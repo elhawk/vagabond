@@ -5,7 +5,8 @@ var Trip = /** @class */ (function () {
         this.endDate = endDate;
         this.budget = budget;
         this.expenditures = [];
-        this.id = Trip._nextId++;
+        // TODO: make id generation use GUIDs
+        this.id = Math.random() * 10000;
     }
     Trip.prototype.addItem = function (item) {
         if (!item)
@@ -26,13 +27,26 @@ var Trip = /** @class */ (function () {
         return true;
     };
     Trip.prototype.removeItem = function (id) {
-        var index = this.expenditures.findIndex(function (element) { return element.id == id; });
+        var index = this.expenditures.findIndex(function (element) { return (element.id == id); });
         // not found
         if (index == -1)
             return null;
         return this.expenditures.splice(index, 1)[0];
     };
-    // TODO: make this based on previously saved trips
-    Trip._nextId = 1;
     return Trip;
+}());
+var Expenditure = /** @class */ (function () {
+    function Expenditure(dates, amount, description, category, location) {
+        if (description === void 0) { description = ""; }
+        if (category === void 0) { category = "uncategorized"; }
+        if (location === void 0) { location = ""; }
+        this.dates = dates;
+        this.amount = amount;
+        this.description = description;
+        this.category = category;
+        this.location = location;
+        // TODO: make ID generation use GUIDs
+        this.id = Math.random() * 10000;
+    }
+    return Expenditure;
 }());
