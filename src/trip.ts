@@ -1,3 +1,9 @@
+export interface ITripManager {
+    trips: ITrip[];
+
+    addTrip(trip: ITrip) : boolean;
+}
+
 export interface ITrip {
     id: number;
     name: string;
@@ -21,6 +27,20 @@ export interface IExpenditure {
     description: string;
     category: string;
     location: string;
+}
+
+class TripManager implements ITripManager {
+    
+    constructor(public trips: ITrip[] = []) {
+
+    }
+    
+    addTrip(trip: ITrip): boolean {
+        // todo checks
+
+        this.trips.push(trip);
+        return true;
+    }
 }
 
 class Trip implements ITrip {
