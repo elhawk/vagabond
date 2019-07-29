@@ -1,16 +1,15 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <LoginScreen />
+      <LoginControl />
     </div>
   );
 }
 
-function LoginScreen() {
+function LoginControl() {
   return (
     <div>
       <h1>Log In</h1>
