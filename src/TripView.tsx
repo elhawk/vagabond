@@ -1,6 +1,7 @@
 import React from 'react';
 import { ITrip, Trip, TripManager } from './trip';
 import { ItemFieldTypes, AddItem, IItemToAdd } from './AddItem';
+import { TripExpenditures } from './ExpendituresView';
 
 
 interface ITripViewProps {
@@ -8,7 +9,12 @@ interface ITripViewProps {
 }
 
 interface ITripViewState {
+    // All the trips we are rendering
     trips: ITrip[];
+
+    // A single trip to display the expenditures, by its id.  When the id is -1 
+    // we display the total trips view.
+    tripToDisplay: number;
 }
 
 // A view to see a list of all of your trips.  Clicking on a trip will drill down
@@ -18,9 +24,12 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
     constructor(props: ITripViewProps) {
         super(props);
 
-        this.state = {trips: []};
+        this.state = {
+            trips: [],
+            tripToDisplay: -1,};
 
         this.onItemAddedCallback = this.onItemAddedCallback.bind(this);
+        this.onTripClick = this.onTripClick.bind(this);
     }
     
     // todo: see if I can get rid of item.item
@@ -32,15 +41,29 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
     };
 
     render() {
-        let tripsList = this.state.trips.map(SingleTrip);
-        return (
-        <div>
-            <AddItem 
-                onItemAddedCallback={this.onItemAddedCallback}
-                itemToAdd={this.newTripInput}
-                itemName = {"Trip"} />
-            {tripsList}
-        </div>);
+        // Display add / list trips view
+        if (this.state.tripToDisplay == -1) {
+            let tripsList = [];
+            for (let trip of this.state.trips) {
+                tripsList.push(<SingleTrip trip={trip} onTripClick={this.onTripClick} />)
+            }
+            return (
+            <div>
+                <AddItem 
+                    onItemAddedCallback={this.onItemAddedCallback}
+                    itemToAdd={this.newTripInput}
+                    itemName = {"Trip"} />
+                {tripsList}
+            </div>);
+        } else {
+            // Display single trip view
+            return <TripExpenditures trip={this.props.tripManager.getTripById(this.state.tripToDisplay)}/>
+        }
+
+    }
+
+    onTripClick(id: number) {
+        this.setState({tripToDisplay: id});
     }
 
     onItemAddedCallback(item: IItemToAdd) {
@@ -55,13 +78,17 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
     }
 }
 
-function SingleTrip(trip: ITrip) {
+function SingleTrip(
+    props: {
+        trip: ITrip,
+        onTripClick: (id: number) => void}) {
+            console.log(props.trip.id);
     return (
-        <div key={trip.id}>
-            {trip.name} 
-            Start Date: {trip.startDate}
-            End Date: {trip.endDate}
-            Budget: {trip.budget}
+        <div key={props.trip.id} onClick={() => props.onTripClick(props.trip.id)}>
+            {props.trip.name} 
+            Start Date: {props.trip.startDate}
+            End Date: {props.trip.endDate}
+            Budget: {props.trip.budget}
         </div>
     );
 }

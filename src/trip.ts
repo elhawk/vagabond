@@ -2,6 +2,8 @@ export interface ITripManager {
     trips: ITrip[];
 
     addTrip(trip: ITrip) : number;
+
+    getTripById(id: number) : ITrip;
 }
 
 export interface ITrip {
@@ -41,6 +43,15 @@ export class TripManager implements ITripManager {
         this.trips.push(trip);
         return trip.id;
     }
+
+    getTripById(id: number) : ITrip {
+        let index = this.trips.findIndex(element => element.id == id);
+        if (index == -1) {
+            return null;
+        } else {
+            return this.trips[index];
+        }
+    }
 }
 
 export class Trip implements ITrip {
@@ -53,7 +64,7 @@ export class Trip implements ITrip {
         public endDate: Date,
         public budget: number ) {
             // TODO: make id generation use GUIDs
-           this.id = Math.random() * 10000;
+           this.id = Math.floor(Math.random() * 10000);
     }
 
     addItem(item: IExpenditure): boolean {
@@ -100,6 +111,6 @@ class Expenditure implements IExpenditure {
         public category: string = "uncategorized",
         public location: string = "") {
         // TODO: make ID generation use GUIDs
-        this.id = Math.random()*10000;
+        this.id = Math.floor(Math.random()*10000);
     }
 }
