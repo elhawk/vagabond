@@ -1,4 +1,5 @@
 import React from 'react';
+import { clone } from './clone';
 
 // I want to restrict the allowed types to put into this form
 // is there a less janky way to do this? TODO follow up.
@@ -40,10 +41,13 @@ interface IAddItemState {
 // Add Item provides an "Add Item button" which, when clicked, will 
 // open a form for the user to input values described in the passed in prop
 export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
+    currentItem : IItemToAdd;
+    
     constructor(props: IAddItemProps) {
         super(props);
 
         this.state = {showForm: false};
+        this.currentItem = clone(props.itemToAdd);
 
         this.handleInput = this.handleInput.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -68,16 +72,16 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
     }
 
     onSubmit(event: React.FormEvent<HTMLFormElement>) {
-        this.props.onItemAddedCallback(this.props.itemToAdd);
+        this.props.onItemAddedCallback(clone(this.currentItem));
         this.setState({showForm: false});
-        // TODO make item that was added clear on submit
+        this.currentItem = clone(this.props.itemToAdd);
         event.preventDefault();
     }
 
     // We want to save off what the user has entered into the form so that we have it
     // handy when the form is submitted
     handleInput(event: React.ChangeEvent<HTMLInputElement>) {
-        this.props.itemToAdd.item[event.target.name].value = event.target.value;
+        this.currentItem.item[event.target.name].value = event.target.value;
     }
 }
 

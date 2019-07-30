@@ -2,6 +2,7 @@ import React from 'react';
 import { TripManager } from './trip';
 import { ItemFieldTypes, AddItem, IItemToAdd } from './AddItem';
 
+
 interface ITripViewProps {
     tripManager: TripManager;
 }
@@ -42,11 +43,8 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
     }
 
     onItemAddedCallback(item: IItemToAdd) {
-        console.log(this.state["trips"]);
         this.state["trips"].push(item);
-        console.log(this.state["trips"]);
         this.setState({trips: this.state.trips});
-        console.log(this.state["trips"]);
     }
 }
 
