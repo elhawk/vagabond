@@ -1,12 +1,24 @@
 import React from 'react';
 import { TripManager } from './trip';
-import { IItemField, ItemFieldTypes, AddItem, IItemToAdd } from './AddItem';
+import { ItemFieldTypes, AddItem, IItemToAdd } from './AddItem';
 
 interface ITripViewProps {
     tripManager: TripManager;
 }
 
-export class TripView extends React.Component<ITripViewProps> {
+interface ITripViewState {
+    trips: IItemToAdd[];
+}
+
+export class TripView extends React.Component<ITripViewProps, ITripViewState> {
+
+    constructor(props: ITripViewProps) {
+        super(props);
+
+        this.state = {trips: []};
+
+        this.onItemAddedCallback = this.onItemAddedCallback.bind(this);
+    }
     
     // todo: see if I can get rid of item.item
     newTripInput: IItemToAdd = { item:
@@ -17,13 +29,34 @@ export class TripView extends React.Component<ITripViewProps> {
     };
 
     render() {
-        return <AddItem 
-            onItemAddedCallback={this.onItemAddedCallback}
-            itemToAdd={this.newTripInput}
-            itemName = {"Trip"} />
+        console.log("render");
+        let tripsList = this.state.trips.map(SingleTrip);
+        return (
+        <div>
+            <AddItem 
+                onItemAddedCallback={this.onItemAddedCallback}
+                itemToAdd={this.newTripInput}
+                itemName = {"Trip"} />
+            {tripsList}
+        </div>);
     }
 
     onItemAddedCallback(item: IItemToAdd) {
-        console.log(item.item);
+        console.log(this.state["trips"]);
+        this.state["trips"].push(item);
+        console.log(this.state["trips"]);
+        this.setState({trips: this.state.trips});
+        console.log(this.state["trips"]);
     }
+}
+
+function SingleTrip(item: IItemToAdd) {
+    return (
+        <div key={item.item["Name"].value}>
+            {item.item["Name"].value} 
+            Start Date: {item.item["StartDate"].value}
+            End Date: {item.item["EndDate"].value}
+            Budget: {item.item["Budget"].value}
+        </div>
+    );
 }
