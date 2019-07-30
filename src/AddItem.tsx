@@ -51,6 +51,7 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
 
         this.handleInput = this.handleInput.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.onCancel = this.onCancel.bind(this);
         this.onAddClick = this.onAddClick.bind(this);
     }
 
@@ -59,7 +60,8 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
             return <AddForm 
                 itemToAdd={this.props.itemToAdd}
                 handleInput={this.handleInput}
-                onSubmit= {this.onSubmit}/>
+                onSubmit= {this.onSubmit}
+                onCancel={this.onCancel}/>
         } else {
             return <AddButton 
                 onClick={this.onAddClick}
@@ -73,9 +75,14 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
 
     onSubmit(event: React.FormEvent<HTMLFormElement>) {
         this.props.onItemAddedCallback(clone(this.currentItem));
+        this.currentItem = clone(this.props.itemToAdd);
+        this.setState({showForm: false});
+        event.preventDefault();
+    }
+
+    onCancel() {
         this.setState({showForm: false});
         this.currentItem = clone(this.props.itemToAdd);
-        event.preventDefault();
     }
 
     // We want to save off what the user has entered into the form so that we have it
@@ -101,7 +108,9 @@ function createFormInput(key: string, item: IItemField, handleInput: ((event: Re
 function AddForm(props: {
     itemToAdd: IItemToAdd,
     handleInput: ((event: React.ChangeEvent<HTMLInputElement> ) => (void)),
-    onSubmit: (event: React.FormEvent<HTMLFormElement>) => void} ){
+    onSubmit: (event: React.FormEvent<HTMLFormElement>) => void, 
+    onCancel: () => void}
+){
     let formInputs = [];
     for(let key of Object.keys(props.itemToAdd.item)) {
         formInputs.push(createFormInput(key,  props.itemToAdd.item[key], props.handleInput));
@@ -112,7 +121,7 @@ function AddForm(props: {
         <form onSubmit = {props.onSubmit}>
             {formInputs}
             <button type="submit">Add</button>
-            <button type="submit">Cancel</button> 
+            <button type="submit" onClick={props.onCancel}>Cancel</button> 
         </form>
     )
 }
