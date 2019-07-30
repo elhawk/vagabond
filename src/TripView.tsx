@@ -1,6 +1,6 @@
 import React from 'react';
 import { TripManager } from './trip';
-import { IItemToAdd, ItemFieldTypes, AddItem } from './AddItem';
+import { IItemField, ItemFieldTypes, AddItem, IItemToAdd } from './AddItem';
 
 interface ITripViewProps {
     tripManager: TripManager;
@@ -8,14 +8,19 @@ interface ITripViewProps {
 
 export class TripView extends React.Component<ITripViewProps> {
     
-    newTripInput: IItemToAdd[] = [
-        {name: "Name", type: ItemFieldTypes.stringType, required: true},
-        {name: "Start Date", type: ItemFieldTypes.dateType, required: true},
-        {name: "End Date", type: ItemFieldTypes.dateType, required: true},
-        {name: "Budget", type: ItemFieldTypes.numberType, required: true},
-    ];
+    // todo: see if I can get rid of item.item
+    newTripInput: IItemToAdd = { item:
+        {"Name": {name: "Name", type: ItemFieldTypes.stringType, required: true},
+        "StartDate": {name: "Start Date", type: ItemFieldTypes.dateType, required: true},
+        "EndDate": {name: "End Date", type: ItemFieldTypes.dateType, required: true},
+        "Budget": {name: "Budget", type: ItemFieldTypes.numberType, required: true},}
+    };
 
     render() {
-        return <AddItem onItemAddedCallback={()=> {}} itemsToAdd={this.newTripInput} />
+        return <AddItem onItemAddedCallback={this.onItemAddedCallback} itemToAdd={this.newTripInput} />
+    }
+
+    onItemAddedCallback(item: IItemToAdd) {
+        console.log(item.item);
     }
 }

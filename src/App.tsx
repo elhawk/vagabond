@@ -21,7 +21,6 @@ class App extends React.Component<{}, IAppState> {
   }
 
   loginStateChangedCallback(loggedIn: boolean) {
-    console.log("loginStateChangedCallback: " + loggedIn);
     this.setState({isLoggedIn: loggedIn});
   }
 
