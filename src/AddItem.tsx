@@ -23,29 +23,54 @@ export interface IItemField {
 }
 
 export interface IAddItemProps {
+    // callback when a new item is added
     onItemAddedCallback(itemAdded : IItemToAdd) : void;
+
+    // description of the type of item we are adding, used to build the form
     itemToAdd: IItemToAdd;
+
+    // The name of the item we are adding -- displayed on the Add button.
+    itemName: string;
+}
+
+interface IAddItemState {
+    showForm: boolean;
 }
 
 // Add Item provides an "Add Item button" which, when clicked, will 
 // open a form for the user to input values described in the passed in prop
-export class AddItem extends React.Component<IAddItemProps> {
+export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
     constructor(props: IAddItemProps) {
         super(props);
 
+        this.state = {showForm: false};
+
         this.handleInput = this.handleInput.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.onAddClick = this.onAddClick.bind(this);
     }
 
     render() {
-        return <AddForm 
-            itemToAdd={this.props.itemToAdd}
-            handleInput={this.handleInput}
-            onSubmit= {this.onSubmit}/>
+        if (this.state.showForm) {
+            return <AddForm 
+                itemToAdd={this.props.itemToAdd}
+                handleInput={this.handleInput}
+                onSubmit= {this.onSubmit}/>
+        } else {
+            return <AddButton 
+                onClick={this.onAddClick}
+                itemName={this.props.itemName}/>
+        }
+    }
+
+    onAddClick() {
+        this.setState({showForm: true});
     }
 
     onSubmit(event: React.FormEvent<HTMLFormElement>) {
         this.props.onItemAddedCallback(this.props.itemToAdd);
+        this.setState({showForm: false});
+        // TODO make item that was added clear on submit
         event.preventDefault();
     }
 
@@ -77,10 +102,13 @@ function AddForm(props: {
     for(let key of Object.keys(props.itemToAdd.item)) {
         formInputs.push(createFormInput(key,  props.itemToAdd.item[key], props.handleInput));
     }
+
+    // TODO: implement cancel
     return (
         <form onSubmit = {props.onSubmit}>
             {formInputs}
-            <input type="submit"></input>
+            <button type="submit">Add</button>
+            <button type="submit">Cancel</button> 
         </form>
     )
 }

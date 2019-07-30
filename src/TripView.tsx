@@ -17,7 +17,10 @@ export class TripView extends React.Component<ITripViewProps> {
     };
 
     render() {
-        return <AddItem onItemAddedCallback={this.onItemAddedCallback} itemToAdd={this.newTripInput} />
+        return <AddItem 
+            onItemAddedCallback={this.onItemAddedCallback}
+            itemToAdd={this.newTripInput}
+            itemName = {"Trip"} />
     }
 
     onItemAddedCallback(item: IItemToAdd) {
