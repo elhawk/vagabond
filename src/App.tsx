@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import {LoginControl} from './LoginControl';
 
 function App() {
   return (
@@ -7,19 +8,6 @@ function App() {
       <LoginControl />
     </div>
   );
-}
-
-function LoginControl() {
-  return (
-    <div>
-      <h1>Log In</h1>
-      <form>
-        UserName: <textarea />
-        Password: <textarea />
-        <input type="submit" value="submit" />
-      </form>
-    </div>
-  )
 }
 
 export default App;
