@@ -29,7 +29,7 @@ export interface IExpenditure {
     location: string;
 }
 
-class TripManager implements ITripManager {
+export class TripManager implements ITripManager {
     
     constructor(public trips: ITrip[] = []) {
 
@@ -81,7 +81,7 @@ class Trip implements ITrip {
         let index = this.expenditures.findIndex(element => (element.id == id));
         
         // not found
-        if (index == -1)
+        if (index === -1)
             return null;
         
         return this.expenditures.splice(index, 1)[0];
