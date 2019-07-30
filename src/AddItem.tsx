@@ -51,7 +51,7 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
 
         this.handleInput = this.handleInput.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-        this.onCancel = this.onCancel.bind(this);
+        this.resetForm = this.resetForm.bind(this);
         this.onAddClick = this.onAddClick.bind(this);
     }
 
@@ -61,7 +61,7 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
                 itemToAdd={this.props.itemToAdd}
                 handleInput={this.handleInput}
                 onSubmit= {this.onSubmit}
-                onCancel={this.onCancel}/>
+                onCancel={this.resetForm}/>
         } else {
             return <AddButton 
                 onClick={this.onAddClick}
@@ -75,14 +75,15 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
 
     onSubmit(event: React.FormEvent<HTMLFormElement>) {
         this.props.onItemAddedCallback(clone(this.currentItem));
-        this.currentItem = clone(this.props.itemToAdd);
-        this.setState({showForm: false});
+        
+        this.resetForm();
+        
         event.preventDefault();
     }
 
-    onCancel() {
-        this.setState({showForm: false});
+    resetForm() {
         this.currentItem = clone(this.props.itemToAdd);
+        this.setState({showForm: false});
     }
 
     // We want to save off what the user has entered into the form so that we have it
