@@ -1,7 +1,7 @@
 export interface ITripManager {
     trips: ITrip[];
 
-    addTrip(trip: ITrip) : boolean;
+    addTrip(trip: ITrip) : number;
 }
 
 export interface ITrip {
@@ -35,15 +35,15 @@ export class TripManager implements ITripManager {
 
     }
     
-    addTrip(trip: ITrip): boolean {
+    addTrip(trip: ITrip): number {
         // todo checks
 
         this.trips.push(trip);
-        return true;
+        return trip.id;
     }
 }
 
-class Trip implements ITrip {
+export class Trip implements ITrip {
     id: number;
     expenditures: IExpenditure[] = [];
 

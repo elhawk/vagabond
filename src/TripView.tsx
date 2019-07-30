@@ -1,5 +1,5 @@
 import React from 'react';
-import { TripManager } from './trip';
+import { ITrip, Trip, TripManager } from './trip';
 import { ItemFieldTypes, AddItem, IItemToAdd } from './AddItem';
 
 
@@ -8,9 +8,11 @@ interface ITripViewProps {
 }
 
 interface ITripViewState {
-    trips: IItemToAdd[];
+    trips: ITrip[];
 }
 
+// A view to see a list of all of your trips.  Clicking on a trip will drill down
+// into that single trip, opening your expenditures view
 export class TripView extends React.Component<ITripViewProps, ITripViewState> {
 
     constructor(props: ITripViewProps) {
@@ -30,7 +32,6 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
     };
 
     render() {
-        console.log("render");
         let tripsList = this.state.trips.map(SingleTrip);
         return (
         <div>
@@ -43,18 +44,24 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
     }
 
     onItemAddedCallback(item: IItemToAdd) {
-        this.state["trips"].push(item);
-        this.setState({trips: this.state.trips});
+        let tripId = this.props.tripManager.addTrip(
+            new Trip(
+                item.item["Name"].value,
+                item.item["StartDate"].value,
+                item.item["EndDate"].value,
+                item.item["Budget"].value));
+
+        this.setState({trips: this.props.tripManager.trips});
     }
 }
 
-function SingleTrip(item: IItemToAdd) {
+function SingleTrip(trip: ITrip) {
     return (
-        <div key={item.item["Name"].value}>
-            {item.item["Name"].value} 
-            Start Date: {item.item["StartDate"].value}
-            End Date: {item.item["EndDate"].value}
-            Budget: {item.item["Budget"].value}
+        <div key={trip.id}>
+            {trip.name} 
+            Start Date: {trip.startDate}
+            End Date: {trip.endDate}
+            Budget: {trip.budget}
         </div>
     );
 }

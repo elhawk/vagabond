@@ -117,14 +117,13 @@ function AddForm(props: {
         formInputs.push(createFormInput(key,  props.itemToAdd.item[key], props.handleInput));
     }
 
-    // TODO: implement cancel
     return (
         <form onSubmit = {props.onSubmit}>
             {formInputs}
             <button type="submit">Add</button>
             <button type="submit" onClick={props.onCancel}>Cancel</button> 
         </form>
-    )
+    );
 }
 
 function AddButton(props: {onClick: () => void, itemName: string}) {
