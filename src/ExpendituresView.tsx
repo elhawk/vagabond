@@ -1,5 +1,5 @@
 import React from "react";
-import { ITrip, IExpenditure } from "./trip";
+import { ITrip, IExpenditure, Expenditure } from "./trip";
 import { ItemFieldTypes, IItemToAdd, AddItem } from "./AddItem";
 
 interface IExpendituresViewProps {
@@ -17,7 +17,7 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
     constructor(props: IExpendituresViewProps) {
         super(props);
 
-        this.state = {expenditures: []};
+        this.state = {expenditures: props.trip.expenditures};
 
         this.onExpenditureAddedCallback = this.onExpenditureAddedCallback.bind(this);
     }
@@ -31,9 +31,15 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
     };
 
     onExpenditureAddedCallback(item: IItemToAdd) {
-        console.log("expenditure added");
-        console.log(item);
-        // TODO implement adding this to the list
+        let expenditure = new Expenditure(
+            [new Date(item.item["Date"].value)],
+            item.item["Amount"].value,
+            item.item["Description"].value,
+            item.item["Category"].value
+        );
+
+        this.props.trip.addItem(expenditure);
+        this.setState({expenditures: this.props.trip.expenditures});
     }
 
     render() {
@@ -56,7 +62,7 @@ function SingleExpenditure(expenditure: IExpenditure) {
     return (
         <div key={expenditure.id}>
             {expenditure.description} 
-            Date: {expenditure.dates[0]}
+            Date: {expenditure.dates[0].toDateString()}
             Amount: {expenditure.amount}
             Category: {expenditure.category}
         </div>

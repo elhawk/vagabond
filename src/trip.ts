@@ -74,9 +74,9 @@ export class Trip implements ITrip {
         // if any of the dates that this item applies to fall outside the date
         // range of the trip, it's an error
         for (let d of item.dates) {
-            let itemDate = d.getDate();
-            let tripStart = this.startDate.getDate();
-            let tripEnd = this.endDate.getDate();
+            let itemDate = d.getTime();
+            let tripStart = this.startDate.getTime();
+            let tripEnd = this.endDate.getTime();
             if (itemDate < tripStart || itemDate > tripEnd) {
                 console.log(`Expenditure has date outside of range! 
                     ItemDate:${itemDate} TripStart:${tripStart} TripEnd:${tripEnd}`);
@@ -100,7 +100,7 @@ export class Trip implements ITrip {
     }
 }
 
-class Expenditure implements IExpenditure {
+export class Expenditure implements IExpenditure {
 
     id: number;        
 

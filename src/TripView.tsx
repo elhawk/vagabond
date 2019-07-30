@@ -73,8 +73,8 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
         let tripId = this.props.tripManager.addTrip(
             new Trip(
                 item.item["Name"].value,
-                item.item["StartDate"].value,
-                item.item["EndDate"].value,
+                new Date(item.item["StartDate"].value),
+                new Date(item.item["EndDate"].value),
                 item.item["Budget"].value));
 
         this.setState({trips: this.props.tripManager.trips});
@@ -93,8 +93,8 @@ function SingleTrip(
     return (
         <div key={props.trip.id} onClick={() => props.onTripClick(props.trip.id)}>
             {props.trip.name} 
-            Start Date: {props.trip.startDate}
-            End Date: {props.trip.endDate}
+            Start Date: {props.trip.startDate.toDateString()}
+            End Date: {props.trip.endDate.toDateString()}
             Budget: {props.trip.budget}
         </div>
     );
