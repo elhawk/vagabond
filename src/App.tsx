@@ -9,14 +9,14 @@ interface IAppState {
 }
 
 class App extends React.Component<{}, IAppState> {
-  tripManager: TripManager = new TripManager();
+  tripManager: TripManager;
 
   constructor(props: {}) {
     super(props);
     this.state = {
       isLoggedIn: false,
     }
-
+    this.tripManager = new TripManager();
     this.loginStateChangedCallback = this.loginStateChangedCallback.bind(this);
   }
 
@@ -26,7 +26,7 @@ class App extends React.Component<{}, IAppState> {
   }
 
   render() {
-    // TODO make this not suck
+    // TODO make this not suck.  Would prefer not to repeat the block for logged in versus not.
     if (this.state.isLoggedIn) {
       return (
         <div className="App">
