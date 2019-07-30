@@ -29,6 +29,7 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
             tripToDisplay: -1,};
 
         this.onItemAddedCallback = this.onItemAddedCallback.bind(this);
+        this.onCloseExpendituresViewCallback = this.onCloseExpendituresViewCallback.bind(this);
         this.onTripClick = this.onTripClick.bind(this);
     }
     
@@ -57,7 +58,9 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
             </div>);
         } else {
             // Display single trip view
-            return <TripExpenditures trip={this.props.tripManager.getTripById(this.state.tripToDisplay)}/>
+            return <TripExpenditures
+                trip={this.props.tripManager.getTripById(this.state.tripToDisplay)}
+                onCloseCallback={this.onCloseExpendituresViewCallback}/>
         }
 
     }
@@ -75,6 +78,10 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
                 item.item["Budget"].value));
 
         this.setState({trips: this.props.tripManager.trips});
+    }
+
+    onCloseExpendituresViewCallback() {
+        this.setState({tripToDisplay: -1});
     }
 }
 
