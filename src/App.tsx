@@ -30,10 +30,11 @@ class App extends React.Component<{}, IAppState> {
   }
 
   render() {
-    let tripView = this.state.isLoggedIn ? <TripView tripManager={this.tripManager} /> : "";
+    let tripView = this.state.isLoggedIn ? <TripView tripManager={this.tripManager} /> : null;
 
     return (
       <div className="App">
+        <Header onLoggedInChange={this.onLoggedInChange} isLoggedIn={this.state.isLoggedIn} userName={this.state.userName}/>
         <LoginControl onLoggedInChange={this.onLoggedInChange} isLoggedIn={this.state.isLoggedIn}/>
         {tripView}
       </div>

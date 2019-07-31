@@ -1,14 +1,16 @@
 import React from 'react';
 
-interface ILoginControlProps {
+export interface ILoginControlProps {
     onLoggedInChange(loggedIn: boolean, userName: string) : void;
     isLoggedIn: boolean;
+    userName?: string;
 }
 
 // A dummy login control, to be replaced by something real later.
 // For now this just users the user name for a greeting and trip ownership,
 // and ignores the password altogether.
 export class LoginControl extends React.Component<ILoginControlProps> {
+
     // tracks the value currently in the username form, to pass back to the App on log in.
     userNameFormContents: string;
 
@@ -77,8 +79,8 @@ function LoginForm(props: ILoginFormProps) {
     );
 }
 
-  function LogoutButton(props: {onClick: (()=> void)}){
-      return (
-          <button onClick={props.onClick}>Log Out</button>
-      );
-  }
+export function LogoutButton(props: {onClick: (()=> void)}){
+    return (
+        <button onClick={props.onClick}>Log Out</button>
+    );
+}
