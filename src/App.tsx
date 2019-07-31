@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import {Header} from './Header';
 import {LoginControl} from './LoginControl';
 import {TripManager} from './trip';
 import {TripView} from './TripView';
@@ -29,6 +30,7 @@ class App extends React.Component<{}, IAppState> {
     if (this.state.isLoggedIn) {
       return (
         <div className="App">
+          <Header />
           <LoginControl loginStateChangedCallback={this.loginStateChangedCallback}/>
           <TripView tripManager={this.tripManager}/>
         </div>
@@ -38,6 +40,7 @@ class App extends React.Component<{}, IAppState> {
     {
       return (
         <div className="App">
+          <Header />
           <LoginControl loginStateChangedCallback={this.loginStateChangedCallback}/>
         </div>
       );
