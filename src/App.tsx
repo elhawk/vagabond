@@ -6,7 +6,9 @@ import {TripManager} from './trip';
 import {TripView} from './TripView';
 
 interface IAppState {
+  // login related state
   isLoggedIn: boolean;
+  userName: string;
 }
 
 class App extends React.Component<{}, IAppState> {
@@ -16,35 +18,27 @@ class App extends React.Component<{}, IAppState> {
     super(props);
     this.state = {
       isLoggedIn: false,
+      userName: "",
     }
     this.tripManager = new TripManager();
-    this.loginStateChangedCallback = this.loginStateChangedCallback.bind(this);
+    this.onLoggedInChange = this.onLoggedInChange.bind(this);
   }
 
-  loginStateChangedCallback(loggedIn: boolean) {
-    this.setState({isLoggedIn: loggedIn});
+  onLoggedInChange(loggedIn: boolean, userName: string) {
+    console.log("userName" + userName);
+    this.setState({isLoggedIn: loggedIn, userName: userName});
   }
 
   render() {
-    // TODO make this not suck.  Would prefer not to repeat the block for logged in versus not.
-    if (this.state.isLoggedIn) {
-      return (
-        <div className="App">
-          <Header />
-          <LoginControl loginStateChangedCallback={this.loginStateChangedCallback}/>
-          <TripView tripManager={this.tripManager}/>
-        </div>
-      );
-    }
-    else
-    {
-      return (
-        <div className="App">
-          <Header />
-          <LoginControl loginStateChangedCallback={this.loginStateChangedCallback}/>
-        </div>
-      );
-    }
+    let tripView = this.state.isLoggedIn ? <TripView tripManager={this.tripManager} /> : "";
+
+    return (
+      <div className="App">
+        <LoginControl onLoggedInChange={this.onLoggedInChange} isLoggedIn={this.state.isLoggedIn}/>
+        {tripView}
+      </div>
+    );
+
   }
 }
 

@@ -1,57 +1,46 @@
 import React from 'react';
 
-interface ILoginControlState {
-    isLoggedIn: boolean,
-    username: string,
-    password: string,
-}
-
 interface ILoginControlProps {
-    loginStateChangedCallback(loggedIn: boolean) : void;
+    onLoggedInChange(loggedIn: boolean, userName: string) : void;
+    isLoggedIn: boolean;
 }
 
-export class LoginControl extends React.Component<ILoginControlProps, ILoginControlState> {
+// A dummy login control, to be replaced by something real later.
+// For now this just users the user name for a greeting and trip ownership,
+// and ignores the password altogether.
+export class LoginControl extends React.Component<ILoginControlProps> {
+    // tracks the value currently in the username form, to pass back to the App on log in.
+    userNameFormContents: string;
 
     constructor(props: ILoginControlProps) {
         super(props);
+
         this.handleLoginClick = this.handleLoginClick.bind(this);
         this.handleLoginInput = this.handleLoginInput.bind(this);
         this.handleLogoutClick = this.handleLogoutClick.bind(this);
-        this.state = {
-            isLoggedIn: false,
-            username: "",
-            password: "",
-        }
     }
 
     handleLoginInput(event: React.ChangeEvent<HTMLInputElement>) {
         let name: string = event.target.name;
         let value: string = event.target.value.toString();
         if (name === "username")
-            this.setState({username: value});
-        else
-            this.setState({password: value});           
+            this.userNameFormContents = value;          
     }
 
     handleLoginClick(event: React.FormEvent<HTMLFormElement>) {
-        this.setState({isLoggedIn : true});
-        this.props.loginStateChangedCallback(true);
+        this.props.onLoggedInChange(true, this.userNameFormContents);
         event.preventDefault();
     }
 
     handleLogoutClick() {
-        this.setState({
-            isLoggedIn : false,
-            username: "",
-            password: ""});
-        this.props.loginStateChangedCallback(false);
+        this.props.onLoggedInChange(false, "");
     }
 
     render() {
-        if (this.state.isLoggedIn) {
+        if (this.props.isLoggedIn) {
             return (
                 <div>
-                    Hello, {this.state.username}! 
+                    Hello, {this.userNameFormContents}! 
                     <LogoutButton onClick={this.handleLogoutClick}/>
                 </div>);
         } else {
@@ -69,20 +58,20 @@ interface ILoginFormProps {
 
 function LoginForm(props: ILoginFormProps) {
     return (
-        <div>
-            <h1>Log In Please</h1>
+        <div className="container">
+            <h1>Please log in</h1>
             <form onSubmit={props.handleLoginClick}>
-            Username:
-            <input 
-                type="text" 
-                name="username"
-                onChange={props.handleInput} />
-            Password:
-            <input 
-                type="text"
-                name="password"
-                onChange={props.handleInput} />
-            <input type="submit" value="Log In" />
+                Username: 
+                <input 
+                    type="text" 
+                    name="username"
+                    onChange={props.handleInput} />
+                Password:
+                <input 
+                    type="password"
+                    name="password"
+                    onChange={props.handleInput} />
+                <input type="submit" value="Log In" />
             </form>
         </div>
     );
