@@ -32,6 +32,9 @@ export interface IAddItemProps {
 
     // The name of the item we are adding -- displayed on the Add button.
     itemName: string;
+
+    // Title to display before the add button
+    title: string;
 }
 
 interface IAddItemState {
@@ -56,17 +59,31 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
     }
 
     render() {
+        let formOrButton: JSX.Element;
+
+        // We want to show the form below the title, but the button next to the title
+        // handle this by adding a css class when we are in form mode.
+        let flexDirectionClass: string = "";
+
         if (this.state.showForm) {
-            return <AddForm 
+            formOrButton = <AddForm 
                 itemToAdd={this.props.itemToAdd}
                 handleInput={this.handleInput}
                 onSubmit= {this.onSubmit}
                 onCancel={this.resetForm}/>
+            flexDirectionClass = "column-flex-direction";
         } else {
-            return <AddButton 
+            formOrButton = <AddButton
                 onClick={this.onAddClick}
                 itemName={this.props.itemName}/>
         }
+
+        return (
+            <div className={"add-item container " + flexDirectionClass}>
+                <h2 className="add-item-title">{this.props.title}</h2>
+                {formOrButton}
+            </div>
+        )
     }
 
     onAddClick() {
@@ -96,14 +113,14 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
 function createFormInput(key: string, item: IItemField, handleInput: ((event: React.ChangeEvent<HTMLInputElement> ) => (void) )) {
     return (
         // todo: make this key guaranteed unique
-        <p key={key}>
-            {item.name}
+        <div className="form-line" key={key}>
+            <span className="space-right">{item.name}</span>
             <input 
                 name={key}
                 type={item.type.toString()} 
                 required={item.required}
                 onChange={handleInput}></input>
-        </p>);   
+        </div>);   
 }
 
 function AddForm(props: {
@@ -118,10 +135,12 @@ function AddForm(props: {
     }
 
     return (
-        <form onSubmit = {props.onSubmit}>
+        <form className="Form light-border" onSubmit = {props.onSubmit}>
             {formInputs}
-            <button type="submit">Add</button>
-            <button type="submit" onClick={props.onCancel}>Cancel</button> 
+            <div>
+                <button className="space-right" type="submit">Add</button>
+                <button className="space-right" type="submit" onClick={props.onCancel}>Cancel</button> 
+            </div>
         </form>
     );
 }

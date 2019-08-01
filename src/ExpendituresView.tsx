@@ -24,10 +24,10 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
     
     // todo: see if I can get rid of item.item
     newExpenditureInput: IItemToAdd = { item:
-        {"Description": {name: "description", type: ItemFieldTypes.stringType, required: true},
-        "Date": {name: "date", type: ItemFieldTypes.dateType, required: true}, // TODO implement multiple dates
-        "Amount": {name: "amount", type: ItemFieldTypes.numberType, required: true},
-        "Category": {name: "category", type: ItemFieldTypes.stringType, required: false},} // todo: make this a multi select thing
+        {"Description": {name: "Description", type: ItemFieldTypes.stringType, required: true},
+        "Date": {name: "Date", type: ItemFieldTypes.dateType, required: true}, // TODO implement multiple dates
+        "Amount": {name: "Amount", type: ItemFieldTypes.numberType, required: true},
+        "Category": {name: "Category", type: ItemFieldTypes.stringType, required: false},} // todo: make this a multi select thing
     };
 
     onExpenditureAddedCallback(item: IItemToAdd) {
@@ -46,11 +46,11 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
         let expendituresList = this.state.expenditures.map(SingleExpenditure);
         return (
         <div>
-            {this.props.trip.name}
             <AddItem 
                 onItemAddedCallback={this.onExpenditureAddedCallback}
                 itemToAdd={this.newExpenditureInput}
-                itemName = {"Expenditure"} />
+                itemName = {"Expenditure"} 
+                title={this.props.trip.name + " Spending"}/>
             <BackToTrips onCloseCallback={this.props.onCloseCallback}/>
             {expendituresList}
         </div>);
@@ -60,11 +60,11 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
 
 function SingleExpenditure(expenditure: IExpenditure) {
     return (
-        <div key={expenditure.id}>
-            {expenditure.description} 
-            Date: {expenditure.dates[0].toDateString()}
-            Amount: {expenditure.amount}
-            Category: {expenditure.category}
+        <div className="container line-item" key={expenditure.id}>
+            <div>{expenditure.description} </div>
+            <div>Date: {expenditure.dates[0].toDateString()}</div>
+            <div>Amount: {expenditure.amount}</div>
+            <div>Category: {expenditure.category}</div>
         </div>
     );
 }
