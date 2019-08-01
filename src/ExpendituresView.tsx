@@ -46,11 +46,11 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
         let expendituresList = this.state.expenditures.map(SingleExpenditure);
         return (
         <div>
-            {this.props.trip.name}
             <AddItem 
                 onItemAddedCallback={this.onExpenditureAddedCallback}
                 itemToAdd={this.newExpenditureInput}
-                itemName = {"Expenditure"} />
+                itemName = {"Expenditure"} 
+                title={this.props.trip.name + "Expenditures"}/>
             <BackToTrips onCloseCallback={this.props.onCloseCallback}/>
             {expendituresList}
         </div>);

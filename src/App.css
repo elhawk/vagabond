@@ -15,7 +15,6 @@
   justify-content: space-between;
 }
 
-
 .login-form {
   display: flex;
   flex-direction: column;
@@ -31,8 +30,41 @@
   align-items: flex-start;
 }
 
+.light-border {
+  border-style: solid;
+  border-width: thin;
+  padding: 20px;
+  padding-top: 10px;
+}
+
 .submit-button {
   margin-top:10px;
 }
 
+.add-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
 
+.add-item-title {
+  padding-right: 20px;
+}
+
+.add-button {
+  padding-left: 20px;
+}
+
+.space-right {
+  margin-right: 10px;
+}
+
+.form-line {
+  margin-top:10px;
+  margin-bottom:10px;
+}
+
+.column-flex-direction {
+  flex-direction: column;
+  align-items: flex-start;
+}

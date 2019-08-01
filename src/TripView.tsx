@@ -53,7 +53,8 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
                 <AddItem 
                     onItemAddedCallback={this.onItemAddedCallback}
                     itemToAdd={this.newTripInput}
-                    itemName = {"Trip"} />
+                    itemName = {"Trip"} 
+                    title={"Your Trips"} />
                 {tripsList}
             </div>);
         } else {
@@ -62,7 +63,6 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
                 trip={this.props.tripManager.getTripById(this.state.tripToDisplay)}
                 onCloseCallback={this.onCloseExpendituresViewCallback}/>
         }
-
     }
 
     onTripClick(id: number) {
