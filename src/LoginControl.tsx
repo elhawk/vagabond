@@ -19,7 +19,6 @@ export class LoginControl extends React.Component<ILoginControlProps> {
 
         this.handleLoginClick = this.handleLoginClick.bind(this);
         this.handleLoginInput = this.handleLoginInput.bind(this);
-        this.handleLogoutClick = this.handleLogoutClick.bind(this);
     }
 
     handleLoginInput(event: React.ChangeEvent<HTMLInputElement>) {
@@ -34,17 +33,9 @@ export class LoginControl extends React.Component<ILoginControlProps> {
         event.preventDefault();
     }
 
-    handleLogoutClick() {
-        this.props.onLoggedInChange(false, "");
-    }
-
     render() {
         if (this.props.isLoggedIn) {
-            return (
-                <div>
-                    Hello, {this.userNameFormContents}! 
-                    <LogoutButton onClick={this.handleLogoutClick}/>
-                </div>);
+            return null;
         } else {
             return (
                 <LoginForm handleLoginClick={this.handleLoginClick} handleInput={this.handleLoginInput}/>

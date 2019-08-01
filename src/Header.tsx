@@ -15,9 +15,8 @@ export function Header(props: ILoginControlProps) {
 
     return (
         <div className="App-header container">
-            <h1>vagabond</h1>
-            {greeting}
-            {logOut}
+            <div><h1>vagabond</h1></div>
+            <div>{greeting}  {logOut}</div>
         </div>
     );
 }
