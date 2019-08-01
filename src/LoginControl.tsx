@@ -51,9 +51,9 @@ interface ILoginFormProps {
 
 function LoginForm(props: ILoginFormProps) {
     return (
-        <div className="container">
+        <div className="container login-form">
             <h1>Please log in</h1>
-            <form onSubmit={props.handleLoginClick}>
+            <form className="Form" onSubmit={props.handleLoginClick}>
                 Username: 
                 <input 
                     type="text" 
@@ -64,7 +64,7 @@ function LoginForm(props: ILoginFormProps) {
                     type="password"
                     name="password"
                     onChange={props.handleInput} />
-                <input type="submit" value="Log In" />
+                <input className="submit-button" type="submit" value="Log In" />
             </form>
         </div>
     );
