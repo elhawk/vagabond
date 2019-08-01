@@ -68,3 +68,19 @@
   flex-direction: column;
   align-items: flex-start;
 }
+
+.line-item {
+  display: flex;
+  justify-content: space-around;
+  padding:10px;
+  border: solid;
+  border-width: thin;
+}
+
+.line-item-header {
+  font-weight: bold;
+}
+
+.clickable {
+  cursor: pointer;
+}

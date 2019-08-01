@@ -44,7 +44,7 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
     render() {
         // Display add / list trips view
         if (this.state.tripToDisplay == -1) {
-            let tripsList = [];
+            let tripsList = [<TripsHeader />];
             for (let trip of this.state.trips) {
                 tripsList.push(<SingleTrip trip={trip} onTripClick={this.onTripClick} />)
             }
@@ -85,17 +85,28 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
     }
 }
 
+function TripsHeader() {
+    return (
+        <div className="container line-item-header line-item">
+            <div>Trip Name</div>
+            <div>Start Date</div>
+            <div>End Date</div>
+            <div>Budget</div>
+        </div>
+    );
+}
+
 function SingleTrip(
     props: {
         trip: ITrip,
         onTripClick: (id: number) => void}) {
             console.log(props.trip.id);
     return (
-        <div key={props.trip.id} onClick={() => props.onTripClick(props.trip.id)}>
-            {props.trip.name} 
-            Start Date: {props.trip.startDate.toDateString()}
-            End Date: {props.trip.endDate.toDateString()}
-            Budget: {props.trip.budget}
+        <div className="container line-item clickable" key={props.trip.id} onClick={() => props.onTripClick(props.trip.id)}>
+            <div>{props.trip.name} </div>
+            <div>{props.trip.startDate.toDateString()}</div>
+            <div>{props.trip.endDate.toDateString()}</div>
+            <div>{"$" + props.trip.budget}</div>
         </div>
     );
 }
