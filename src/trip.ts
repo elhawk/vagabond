@@ -3,7 +3,7 @@ export interface ITripManager {
 
     addTrip(trip: ITrip) : number;
 
-    getTripById(id: number) : ITrip;
+    getTripById(id: number) : ITrip | null;
 }
 
 export interface ITrip {
@@ -19,7 +19,7 @@ export interface ITrip {
     addItem(item: IExpenditure) : boolean;
 
     // Removes an expenditure from the trip and returns the removed item
-    removeItem(id: number) : IExpenditure;
+    removeItem(id: number) : IExpenditure | null;
 }
 
 export interface IExpenditure {
@@ -39,12 +39,11 @@ export class TripManager implements ITripManager {
     
     addTrip(trip: ITrip): number {
         // todo checks
-
         this.trips.push(trip);
         return trip.id;
     }
 
-    getTripById(id: number) : ITrip {
+    getTripById(id: number) : ITrip | null{
         let index = this.trips.findIndex(element => element.id == id);
         if (index == -1) {
             return null;
@@ -55,16 +54,28 @@ export class TripManager implements ITripManager {
 }
 
 export class Trip implements ITrip {
-    id: number;
-    expenditures: IExpenditure[] = [];
+
+    // Add a new trip with a new ID and no expenditures
+    static newTrip(
+        name: string,
+        startDate: Date,
+        endDate: Date,
+        budget: number 
+    ) : Trip {
+         // TODO: make id generation use GUIDs
+         let id = Math.floor(Math.random() * 10000);
+
+        return new Trip(name, startDate, endDate, budget, id, []);
+    }
 
     constructor (
         public name: string,
         public startDate: Date,
         public endDate: Date,
-        public budget: number ) {
-            // TODO: make id generation use GUIDs
-           this.id = Math.floor(Math.random() * 10000);
+        public budget: number,
+        public id: number,
+        public expenditures: IExpenditure[]) {
+           
     }
 
     addItem(item: IExpenditure): boolean {
@@ -88,7 +99,7 @@ export class Trip implements ITrip {
         return true;
     }
 
-    removeItem(id: number): IExpenditure {
+    removeItem(id: number): IExpenditure | null {
         let index = this.expenditures.findIndex(element => (element.id == id));
         
         // not found

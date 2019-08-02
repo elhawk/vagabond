@@ -12,7 +12,7 @@ export interface ILoginControlProps {
 export class LoginControl extends React.Component<ILoginControlProps> {
 
     // tracks the value currently in the username form, to pass back to the App on log in.
-    userNameFormContents: string;
+    userNameFormContents: string = "";
 
     constructor(props: ILoginControlProps) {
         super(props);

@@ -3,7 +3,6 @@ import { ITrip, Trip, TripManager } from './trip';
 import { ItemFieldTypes, AddItem, IItemToAdd } from './AddItem';
 import { TripExpenditures } from './ExpendituresView';
 
-
 interface ITripViewProps {
     tripManager: TripManager;
 }
@@ -59,9 +58,15 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
             </div>);
         } else {
             // Display single trip view
-            return <TripExpenditures
-                trip={this.props.tripManager.getTripById(this.state.tripToDisplay)}
-                onCloseCallback={this.onCloseExpendituresViewCallback}/>
+            let tripToDisplay: Trip | null = this.props.tripManager.getTripById(this.state.tripToDisplay);
+            if (tripToDisplay != null) {
+                return <TripExpenditures
+                    trip={tripToDisplay}
+                    onCloseCallback={this.onCloseExpendituresViewCallback}/>
+            } else {
+                console.log("Could not find trip with ID "+ this.state.tripToDisplay);
+                return null;
+            }
         }
     }
 
@@ -71,7 +76,7 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
 
     onItemAddedCallback(item: IItemToAdd) {
         let tripId = this.props.tripManager.addTrip(
-            new Trip(
+            Trip.newTrip(
                 item.item["Name"].value,
                 new Date(item.item["StartDate"].value),
                 new Date(item.item["EndDate"].value),
