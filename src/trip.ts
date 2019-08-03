@@ -1,11 +1,3 @@
-export interface ITripManager {
-    trips: ITrip[];
-
-    addTrip(trip: ITrip) : number;
-
-    getTripById(id: number) : ITrip | null;
-}
-
 export interface ITrip {
     id: number;
     name: string;
@@ -29,28 +21,6 @@ export interface IExpenditure {
     description: string;
     category: string;
     location: string;
-}
-
-export class TripManager implements ITripManager {
-    
-    constructor(public trips: ITrip[] = []) {
-
-    }
-    
-    addTrip(trip: ITrip): number {
-        // todo checks
-        this.trips.push(trip);
-        return trip.id;
-    }
-
-    getTripById(id: number) : ITrip | null{
-        let index = this.trips.findIndex(element => element.id == id);
-        if (index == -1) {
-            return null;
-        } else {
-            return this.trips[index];
-        }
-    }
 }
 
 export class Trip implements ITrip {

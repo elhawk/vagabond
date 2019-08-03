@@ -1,4 +1,5 @@
 import { ITrip } from "./trip";
+import { IDateWrapper, DateWrapper } from "./utils/DateWrapper";
 
 export interface ITripManager {
     trips: ITrip[];
@@ -9,24 +10,21 @@ export interface ITripManager {
 }
 
 export class TripManager implements ITripManager {
-    constructor(public trips: ITrip[] = []) {
+    constructor(
+        public trips: ITrip[] = [],
+        public dateWrapper : IDateWrapper = new DateWrapper()) {
+
     }
 
     addTrip(trip: ITrip): number {
-        // todo checks
         this.trips.push(trip);
         return trip.id;
-    }
-
-    // TODO: inject a date getter as a dependency
-    getDate() : number {
-        return Date.now();
     }
 
     getCurrentTrips() : ITrip[] {
         let currentTrips: ITrip[] = [];
         for(let trip of this.trips) {
-            if (trip.startDate.getTime() <= this.getDate() && trip.endDate.getTime() >= this.getDate()) {
+            if (trip.startDate.getTime() <= this.dateWrapper.now() && trip.endDate.getTime() >= this.dateWrapper.now()) {
                 currentTrips.push(trip);
             }
         }
@@ -37,7 +35,7 @@ export class TripManager implements ITripManager {
     getUpcomingTrips() {
         let upcomingTrips: ITrip[] = [];
         for(let trip of this.trips) {
-            if (trip.startDate.getTime() > this.getDate()) {
+            if (trip.startDate.getTime() > this.dateWrapper.now()) {
                 upcomingTrips.push(trip);
             }
         }
@@ -48,7 +46,7 @@ export class TripManager implements ITripManager {
     getPastTrips() {
         let pastTrips: ITrip[] = [];
         for(let trip of this.trips) {
-            if (trip.endDate.getTime() < this.getDate()) {
+            if (trip.endDate.getTime() < this.dateWrapper.now()) {
                 pastTrips.push(trip);
             }
         }

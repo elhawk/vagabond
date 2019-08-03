@@ -1,5 +1,6 @@
 import React from 'react';
-import { ITrip, Trip, TripManager } from './trip';
+import { ITrip, Trip } from './trip';
+import { TripManager } from './TripManager'
 import { ItemFieldTypes, AddItem, IItemToAdd } from './AddItem';
 import { TripExpenditures } from './ExpendituresView';
 

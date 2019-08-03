@@ -1,8 +1,4 @@
-import {Trip, TripManager, Expenditure} from '../trip';
-
-// TripManager tests
-
-// Trip tests
+import {Trip, Expenditure} from '../trip';
 
 // Trip tests -- add expenditure
 it("Doesn't let you add expenditure outside of trip dates", () => {
