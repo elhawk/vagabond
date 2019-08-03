@@ -69,6 +69,10 @@
   align-items: flex-start;
 }
 
+.trips-list {
+  text-align: left;
+}
+
 .line-item {
   display: flex;
   justify-content: space-around;

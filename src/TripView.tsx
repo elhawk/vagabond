@@ -44,19 +44,7 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
     render() {
         // Display add / list trips view
         if (this.state.tripToDisplay == -1) {
-            let tripsList = [<TripsHeader />];
-            for (let trip of this.state.trips) {
-                tripsList.push(<SingleTrip trip={trip} onTripClick={this.onTripClick} />)
-            }
-            return (
-            <div>
-                <AddItem 
-                    onItemAddedCallback={this.onItemAddedCallback}
-                    itemToAdd={this.newTripInput}
-                    itemName = {"Trip"} 
-                    title={"Your Trips"} />
-                {tripsList}
-            </div>);
+            return this.renderTripsListView();
         } else {
             // Display single trip view
             let tripToDisplay: Trip | null = this.props.tripManager.getTripById(this.state.tripToDisplay);
@@ -69,6 +57,24 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
                 return null;
             }
         }
+    }
+
+    renderTripsListView() : JSX.Element {
+        let currentTrips: Trip[] = this.props.tripManager.getCurrentTrips();
+        let upcomingTrips: Trip[] = this.props.tripManager.getUpcomingTrips();
+        let pastTrips: Trip[] = this.props.tripManager.getPastTrips();
+
+        return (
+            <div>
+                <AddItem 
+                    onItemAddedCallback={this.onItemAddedCallback}
+                    itemToAdd={this.newTripInput}
+                    itemName = {"Trip"} 
+                    title={"Your Trips"} />
+                <TripList tripName={"Current"} trips={currentTrips} onTripClick={this.onTripClick}/>
+                <TripList tripName={"Upcoming"} trips={upcomingTrips} onTripClick={this.onTripClick}/>
+                <TripList tripName={"Past"} trips={pastTrips} onTripClick={this.onTripClick}/>
+            </div>);
     }
 
     onTripClick(id: number) {
@@ -98,6 +104,29 @@ function TripsHeader() {
             <div>Start Date</div>
             <div>End Date</div>
             <div>Budget</div>
+        </div>
+    );
+}
+
+function TripList(props: {
+        tripName: string,
+        trips: Trip[],
+        onTripClick: (id: number)=> void}) : JSX.Element {
+    let tripsElement = [];
+    if (props.trips.length == 0) {
+        let noTripsMessage: string = "You have no " + props.tripName.toLowerCase() + " trips."
+        tripsElement.push(noTripsMessage);
+    } else {
+        tripsElement.push(<TripsHeader />);
+        for (let trip of props.trips) {
+            tripsElement.push(<SingleTrip trip={trip} onTripClick={props.onTripClick} />)
+        }
+    }
+
+    return (
+        <div className="container trips-list">
+            <h3> {props.tripName} Trips </h3>
+            {tripsElement}
         </div>
     );
 }
