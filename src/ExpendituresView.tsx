@@ -69,7 +69,6 @@ function SingleExpenditure(expenditure: IExpenditure) {
     );
 }
 
-// TODO: implement back to trips
 function BackToTrips(props: {onCloseCallback: (() => void)}) {
     return (
         <button onClick={props.onCloseCallback}>Back to Trips View</button>
