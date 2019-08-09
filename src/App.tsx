@@ -2,8 +2,8 @@ import React from 'react';
 import './App.css';
 import {Header} from './Header';
 import {LoginControl} from './LoginControl';
-import {TripManager} from './TripManager';
-import {TripView} from './TripView';
+import {TripManager} from './Trip/TripManager';
+import {TripView} from './Trip/TripView';
 
 interface IAppState {
   // login related state

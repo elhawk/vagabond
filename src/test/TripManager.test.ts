@@ -1,5 +1,5 @@
-import {TripManager} from '../TripManager'
-import {Trip} from '../trip'
+import {TripManager} from '../Trip/TripManager'
+import {Trip} from '../Trip/trip'
 import { IDateWrapper } from '../utils/DateWrapper';
 
 const currentDate: Date = new Date("2019-08-03");

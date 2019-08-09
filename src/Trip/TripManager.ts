@@ -1,5 +1,5 @@
 import { ITrip, Trip } from "./trip";
-import { IDateWrapper, DateWrapper } from "./utils/DateWrapper";
+import { IDateWrapper, DateWrapper } from "../utils/DateWrapper";
 
 export interface ITripManager {
     trips: ITrip[];
