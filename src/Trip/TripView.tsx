@@ -2,7 +2,7 @@ import React from 'react';
 import { ITrip, Trip } from './trip';
 import { TripManager } from './TripManager'
 import {  AddItem, IItemToAdd } from '../AddItem/AddItem';
-import { TripExpenditures } from '../ExpendituresView';
+import { TripExpenditures } from './Expenditure/ExpendituresView';
 
 interface ITripViewProps {
     tripManager: TripManager;

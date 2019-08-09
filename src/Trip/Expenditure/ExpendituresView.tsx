@@ -1,6 +1,6 @@
 import React from "react";
-import { ITrip, IExpenditure, Expenditure } from "./Trip/trip";
-import { IItemToAdd, AddItem } from "./AddItem/AddItem";
+import { ITrip, IExpenditure, Expenditure } from "../trip";
+import { IItemToAdd, AddItem } from "../../AddItem/AddItem";
 
 interface IExpendituresViewProps {
     trip: ITrip;

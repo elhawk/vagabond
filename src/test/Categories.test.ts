@@ -1,4 +1,4 @@
-import {addCategory, Categories} from '../Categories';
+import {addCategory, Categories} from '../Trip/Expenditure/Categories';
 
 it("Adding empty category returns false", () => {
     expect (addCategory("")).toBe(false);
