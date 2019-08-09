@@ -9,7 +9,6 @@ interface IAppState {
   // login related state
   isLoggedIn: boolean;
   userName: string;
-  users: [],
 }
 
 class App extends React.Component<{}, IAppState> {
@@ -20,21 +19,21 @@ class App extends React.Component<{}, IAppState> {
     this.state = {
       isLoggedIn: false,
       userName: "",
-      users: [],
     }
     this.tripManager = new TripManager();
     this.onLoggedInChange = this.onLoggedInChange.bind(this);
   }
 
   onLoggedInChange(loggedIn: boolean, userName: string) {
-    console.log("userName" + userName);
     this.setState({isLoggedIn: loggedIn, userName: userName});
-  }
 
-  componentDidMount() {
-    fetch ('/users')
+    // TODO: fetch trips only for logged in user
+    fetch ('/trips')
       .then(res => res.json())
-      .then(users => this.setState({users: users}));
+      .then(trips => {
+        this.tripManager.addServerTrips(trips);
+        this.setState({}); // todo: move the trips list somewhere that the state will re-render correctly
+      });
   }
 
   render() {
@@ -42,8 +41,6 @@ class App extends React.Component<{}, IAppState> {
 
     return (
       <div className="App">
-        <h1>Users</h1>
-        <p>{JSON.stringify(this.state.users)}</p>
         <Header onLoggedInChange={this.onLoggedInChange} isLoggedIn={this.state.isLoggedIn} userName={this.state.userName}/>
         <LoginControl onLoggedInChange={this.onLoggedInChange} isLoggedIn={this.state.isLoggedIn}/>
         {tripView}

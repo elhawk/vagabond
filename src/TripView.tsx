@@ -99,7 +99,7 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
 
 function TripsHeader() {
     return (
-        <div className="container line-item-header line-item">
+        <div className="container line-item-header line-item" key="tripsheader">
             <div>Trip Name</div>
             <div>Start Date</div>
             <div>End Date</div>
@@ -135,7 +135,6 @@ function SingleTrip(
     props: {
         trip: ITrip,
         onTripClick: (id: number) => void}) {
-            console.log(props.trip.id);
     return (
         <div className="container line-item clickable" key={props.trip.id} onClick={() => props.onTripClick(props.trip.id)}>
             <div>{props.trip.name} </div>

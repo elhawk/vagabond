@@ -1,4 +1,4 @@
-import { ITrip } from "./trip";
+import { ITrip, Trip } from "./trip";
 import { IDateWrapper, DateWrapper } from "./utils/DateWrapper";
 
 export interface ITripManager {
@@ -10,10 +10,31 @@ export interface ITripManager {
 }
 
 export class TripManager implements ITripManager {
+
     constructor(
         public trips: ITrip[] = [],
         public dateWrapper : IDateWrapper = new DateWrapper()) {
 
+    }
+
+    // The server returns a list of trips serialized into JSON.
+    // populate them into Trip objects and add them to our trips list.
+    addServerTrips(trips: object[]) {
+        trips.forEach((jsonTrip: any) => {
+            try {
+                let parsedTrip: ITrip = new Trip(
+                    jsonTrip["name"].toString(),
+                    new Date(jsonTrip["startDate"]),
+                    new Date(jsonTrip["endDate"]),
+                    parseFloat(jsonTrip["budget"]),
+                    parseInt(jsonTrip["id"]),
+                    []
+                );
+                this.trips.push(parsedTrip);
+            } catch(err) {
+                console.log("Unable to parse addServerTrips")
+            };
+        });
     }
 
     addTrip(trip: ITrip): number {
