@@ -1,8 +1,8 @@
 import React from 'react';
 import { ITrip, Trip } from './trip';
 import { TripManager } from './TripManager'
-import {  AddItem, IItemToAdd } from '../AddItem/AddItem';
 import { TripExpenditures } from './Expenditure/ExpendituresView';
+import { AddTrip } from './AddTrip';
 
 interface ITripViewProps {
     tripManager: TripManager;
@@ -30,18 +30,10 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
             trips: [],
             tripToDisplay: -1,};
 
-        this.onItemAddedCallback = this.onItemAddedCallback.bind(this);
+       // this.onItemAddedCallback = this.onItemAddedCallback.bind(this);
         this.onCloseExpendituresViewCallback = this.onCloseExpendituresViewCallback.bind(this);
         this.onTripClick = this.onTripClick.bind(this);
     }
-    
-    // todo: see if I can get rid of item.item
-    newTripInput: IItemToAdd = { item:
-        {"Name": {name: "Name", type: "string", required: true},
-        "StartDate": {name: "Start Date", type: "date", required: true},
-        "EndDate": {name: "End Date", type: "date", required: true},
-        "Budget": {name: "Budget", type: "number", required: true},}
-    };
 
     onComponentMount() {
         // TODO: fetch trips only for logged in user
@@ -79,13 +71,7 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
 
         return (
             <div>
-                <AddItem 
-                    onItemAddedCallback={this.onItemAddedCallback}
-                    itemToAdd={this.newTripInput}
-                    itemName = {"Trip"} 
-                    title={"Your Trips"}
-                    action={"/trips/"}
-                    userName={this.props.userName} />
+                <AddTrip userName={this.props.userName} />
                 <TripList tripName={"Current"} trips={currentTrips} onTripClick={this.onTripClick}/>
                 <TripList tripName={"Upcoming"} trips={upcomingTrips} onTripClick={this.onTripClick}/>
                 <TripList tripName={"Past"} trips={pastTrips} onTripClick={this.onTripClick}/>
@@ -96,16 +82,16 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
         this.setState({tripToDisplay: id});
     }
 
-    onItemAddedCallback(item: IItemToAdd) {
-        let tripId = this.props.tripManager.addTrip(
-            Trip.newTrip(
-                item.item["Name"].value,
-                new Date(item.item["StartDate"].value),
-                new Date(item.item["EndDate"].value),
-                item.item["Budget"].value));
+    // onItemAddedCallback(item: IItemToAdd) {
+    //     let tripId = this.props.tripManager.addTrip(
+    //         Trip.newTrip(
+    //             item.item["Name"].value,
+    //             new Date(item.item["StartDate"].value),
+    //             new Date(item.item["EndDate"].value),
+    //             item.item["Budget"].value));
 
-        this.setState({trips: this.props.tripManager.trips});
-    }
+    //     this.setState({trips: this.props.tripManager.trips});
+    // }
 
     onCloseExpendituresViewCallback() {
         this.setState({tripToDisplay: -1});

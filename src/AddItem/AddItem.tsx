@@ -3,26 +3,26 @@ import { clone } from '../utils/clone';
 import { Form } from './Form';
 import { FieldType } from './Field';
 
-// Describes the data contained in an item we want to have, in the form
-// of a mapping of keys to data fields it must contain.
-export interface IItemToAdd {
-    item: {[itemKey: string] : IItemField};
-}
+// // Describes the data contained in an item we want to have, in the form
+// // of a mapping of keys to data fields it must contain.
+// export interface IItemToAdd {
+//     item: {[itemKey: string] : IItemField};
+// }
 
-// Data field describing part of an item, which will be represented in a form input
-export interface IItemField {
-    name: string;
-    required: boolean;
-    type: FieldType;
-    value?: any;
-}
+// // Data field describing part of an item, which will be represented in a form input
+// export interface IItemField {
+//     name: string;
+//     required: boolean;
+//     type: FieldType;
+//     value?: any;
+// }
 
 export interface IAddItemProps {
     // callback when a new item is added
-    onItemAddedCallback(itemAdded : IItemToAdd) : void;
+    //onItemAddedCallback(itemAdded : IItemToAdd) : void;
 
-    // description of the type of item we are adding, used to build the form
-    itemToAdd: IItemToAdd;
+    // fields to render in the form
+    renderFields: () => React.ReactNode
 
     // The name of the item we are adding -- displayed on the Add button.
     itemName: string;
@@ -44,13 +44,13 @@ interface IAddItemState {
 // Add Item provides an "Add Item button" which, when clicked, will 
 // open a form for the user to input values described in the passed in prop
 export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
-    currentItem : IItemToAdd;
+    //currentItem : IItemToAdd;
     
     constructor(props: IAddItemProps) {
         super(props);
 
         this.state = {showForm: false};
-        this.currentItem = clone(props.itemToAdd);
+        //this.currentItem = clone(props.itemToAdd);
 
         this.handleInput = this.handleInput.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -67,8 +67,7 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
 
         if (this.state.showForm) {
             formOrButton = <Form 
-                itemToAdd={this.props.itemToAdd}
-                handleInput={this.handleInput}
+                renderFields={this.props.renderFields}
                 onSubmit= {this.onSubmit}
                 onCancel={this.resetForm}
                 userName={this.props.userName}/>
@@ -92,7 +91,7 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
     }
 
     onSubmit(event: React.FormEvent<HTMLFormElement>) {
-        this.props.onItemAddedCallback(clone(this.currentItem));
+        //this.props.onItemAddedCallback(clone(this.currentItem));
         
         this.resetForm();
         
@@ -113,14 +112,14 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
     }
 
     resetForm() {
-        this.currentItem = clone(this.props.itemToAdd);
+        //this.currentItem = clone(this.props.itemToAdd);
         this.setState({showForm: false});
     }
 
     // We want to save off what the user has entered into the form so that we have it
     // handy when the form is submitted
     handleInput(event: React.ChangeEvent<HTMLInputElement>) {
-        this.currentItem.item[event.target.name].value = event.target.value;
+        //this.currentItem.item[event.target.name].value = event.target.value;
     }
 }
 
