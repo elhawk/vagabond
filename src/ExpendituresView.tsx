@@ -1,6 +1,6 @@
 import React from "react";
 import { ITrip, IExpenditure, Expenditure } from "./trip";
-import { ItemFieldTypes, IItemToAdd, AddItem } from "./AddItem/AddItem";
+import { IItemToAdd, AddItem } from "./AddItem/AddItem";
 
 interface IExpendituresViewProps {
     trip: ITrip;
@@ -25,10 +25,10 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
     
     // todo: see if I can get rid of item.item
     newExpenditureInput: IItemToAdd = { item:
-        {"Description": {name: "Description", type: ItemFieldTypes.stringType, required: true},
-        "Date": {name: "Date", type: ItemFieldTypes.dateType, required: true}, // TODO implement multiple dates
-        "Amount": {name: "Amount", type: ItemFieldTypes.numberType, required: true},
-        "Category": {name: "Category", type: ItemFieldTypes.stringType, required: false},} // todo: make this a multi select thing
+        {"Description": {name: "Description", type: "string", required: true},
+        "Date": {name: "Date", type: "date", required: true}, // TODO implement multiple dates
+        "Amount": {name: "Amount", type: "number", required: true},
+        "Category": {name: "Category", type: "string", required: false},} // todo: make this a multi select thing
     };
 
     onExpenditureAddedCallback(item: IItemToAdd) {

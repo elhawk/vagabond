@@ -1,5 +1,6 @@
 import React from 'react';
 import { IItemToAdd, IItemField } from './AddItem';
+import { Field } from './Field';
 
 export interface IFormProps {
     itemToAdd: IItemToAdd,
@@ -32,14 +33,12 @@ export class Form extends React.Component<IFormProps> {
 
     createFormInput(key: string, item: IItemField, handleInput: ((event: React.ChangeEvent<HTMLInputElement> ) => (void) )) {
         return (
-            // todo: make this key guaranteed unique
-            <div className="form-line" key={key}>
-                <span className="space-right">{item.name}</span>
-                <input 
-                    name={key}
-                    type={item.type.toString()} 
-                    required={item.required}
-                    onChange={handleInput}></input>
-            </div>);   
+            <Field
+                id={key}
+                label={item.name}
+                fieldType={item.type}
+                required={item.required}
+            />
+        );  
     }
 }

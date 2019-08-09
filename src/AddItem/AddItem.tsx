@@ -1,14 +1,7 @@
 import React from 'react';
 import { clone } from '../utils/clone';
 import { Form } from './Form';
-
-// I want to restrict the allowed types to put into this form
-// is there a less janky way to do this? TODO follow up.
-export enum ItemFieldTypes {
-    stringType = "string",
-    numberType = "number",
-    dateType = "date"
-}
+import { FieldType } from './Field';
 
 // Describes the data contained in an item we want to have, in the form
 // of a mapping of keys to data fields it must contain.
@@ -20,7 +13,7 @@ export interface IItemToAdd {
 export interface IItemField {
     name: string;
     required: boolean;
-    type: ItemFieldTypes;
+    type: FieldType;
     value?: any;
 }
 

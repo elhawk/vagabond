@@ -1,7 +1,7 @@
 import React from 'react';
 import { ITrip, Trip } from './trip';
 import { TripManager } from './TripManager'
-import { ItemFieldTypes, AddItem, IItemToAdd } from './AddItem/AddItem';
+import {  AddItem, IItemToAdd } from './AddItem/AddItem';
 import { TripExpenditures } from './ExpendituresView';
 
 interface ITripViewProps {
@@ -37,10 +37,10 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
     
     // todo: see if I can get rid of item.item
     newTripInput: IItemToAdd = { item:
-        {"Name": {name: "Name", type: ItemFieldTypes.stringType, required: true},
-        "StartDate": {name: "Start Date", type: ItemFieldTypes.dateType, required: true},
-        "EndDate": {name: "End Date", type: ItemFieldTypes.dateType, required: true},
-        "Budget": {name: "Budget", type: ItemFieldTypes.numberType, required: true},}
+        {"Name": {name: "Name", type: "string", required: true},
+        "StartDate": {name: "Start Date", type: "date", required: true},
+        "EndDate": {name: "End Date", type: "date", required: true},
+        "Budget": {name: "Budget", type: "number", required: true},}
     };
 
     onComponentMount() {
