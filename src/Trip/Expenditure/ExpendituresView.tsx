@@ -1,5 +1,5 @@
 import React from "react";
-import { ITrip, IExpenditure, Expenditure } from "../trip";
+import { ITrip, IExpenditure } from "../trip";
 import { AddExpenditure } from "./AddExpenditure";
 
 interface IExpendituresViewProps {
@@ -12,7 +12,6 @@ interface IExpendituresViewState {
     expenditures: IExpenditure[];
 }
 
-// TODO could we refactor to share more code between this and TripView? Very copypasta right now.
 export class TripExpenditures extends React.Component<IExpendituresViewProps, IExpendituresViewState>{
     
     constructor(props: IExpendituresViewProps) {
@@ -22,20 +21,6 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
 
        // this.onExpenditureAddedCallback = this.onExpenditureAddedCallback.bind(this);
     }
-    
-
-
-    // onExpenditureAddedCallback(item: IItemToAdd) {
-    //     let expenditure = new Expenditure(
-    //         [new Date(item.item["Date"].value)],
-    //         item.item["Amount"].value,
-    //         item.item["Description"].value,
-    //         item.item["Category"].value
-    //     );
-
-    //     this.props.trip.addItem(expenditure);
-    //     this.setState({expenditures: this.props.trip.expenditures});
-    // }
 
     render() {
         let expendituresList = this.state.expenditures.map(SingleExpenditure);

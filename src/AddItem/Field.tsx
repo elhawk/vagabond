@@ -20,6 +20,9 @@ export interface IFieldProps {
 
     // The field value
     value?: any;
+
+    // callback when field input changes
+    onChange: (e: React.FormEvent<HTMLInputElement>) => void;
 }
 
 export function Field(props: IFieldProps) {
@@ -32,9 +35,7 @@ export function Field(props: IFieldProps) {
                 type={props.fieldType} 
                 required={props.required}
                 value={props.value}
-                onChange={
-                    (e: React.FormEvent<HTMLInputElement>) => console.log(e)
-                }
+                onChange={props.onChange}
             />
             {/*todo display validation error on submit attempt*/}
         </div>

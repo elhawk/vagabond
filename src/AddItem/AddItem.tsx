@@ -1,28 +1,12 @@
 import React from 'react';
-import { clone } from '../utils/clone';
 import { Form } from './Form';
-import { FieldType } from './Field';
-
-// // Describes the data contained in an item we want to have, in the form
-// // of a mapping of keys to data fields it must contain.
-// export interface IItemToAdd {
-//     item: {[itemKey: string] : IItemField};
-// }
-
-// // Data field describing part of an item, which will be represented in a form input
-// export interface IItemField {
-//     name: string;
-//     required: boolean;
-//     type: FieldType;
-//     value?: any;
-// }
 
 export interface IAddItemProps {
     // callback when a new item is added
     //onItemAddedCallback(itemAdded : IItemToAdd) : void;
 
-    // fields to render in the form
-    renderFields: () => React.ReactNode
+    // fields to render in the form.  Callback to share state between fields and form
+    renderFields: (onFieldChangeCallback: (e: React.FormEvent<HTMLInputElement>) => void) => React.ReactNode
 
     // The name of the item we are adding -- displayed on the Add button.
     itemName: string;
@@ -44,13 +28,11 @@ interface IAddItemState {
 // Add Item provides an "Add Item button" which, when clicked, will 
 // open a form for the user to input values described in the passed in prop
 export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
-    //currentItem : IItemToAdd;
     
     constructor(props: IAddItemProps) {
         super(props);
 
         this.state = {showForm: false};
-        //this.currentItem = clone(props.itemToAdd);
 
         this.handleInput = this.handleInput.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -67,10 +49,11 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
 
         if (this.state.showForm) {
             formOrButton = <Form 
-                renderFields={this.props.renderFields}
-                onSubmit= {this.onSubmit}
-                onCancel={this.resetForm}
-                userName={this.props.userName}/>
+                action = {this.props.action}
+                renderFields = {this.props.renderFields}
+                onSubmit = {this.onSubmit}
+                onCancel = {this.resetForm}
+                userName = {this.props.userName}/>
             flexDirectionClass = "column-flex-direction";
         } else {
             formOrButton = <AddButton
