@@ -1,5 +1,6 @@
 import React from 'react';
-import { clone } from './clone';
+import { clone } from '../utils/clone';
+import { Form } from './Form';
 
 // I want to restrict the allowed types to put into this form
 // is there a less janky way to do this? TODO follow up.
@@ -72,7 +73,7 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
         let flexDirectionClass: string = "";
 
         if (this.state.showForm) {
-            formOrButton = <AddForm 
+            formOrButton = <Form 
                 itemToAdd={this.props.itemToAdd}
                 handleInput={this.handleInput}
                 onSubmit= {this.onSubmit}
@@ -128,44 +129,6 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
     handleInput(event: React.ChangeEvent<HTMLInputElement>) {
         this.currentItem.item[event.target.name].value = event.target.value;
     }
-}
-
-function createFormInput(key: string, item: IItemField, handleInput: ((event: React.ChangeEvent<HTMLInputElement> ) => (void) )) {
-    return (
-        // todo: make this key guaranteed unique
-        <div className="form-line" key={key}>
-            <span className="space-right">{item.name}</span>
-            <input 
-                name={key}
-                type={item.type.toString()} 
-                required={item.required}
-                onChange={handleInput}></input>
-        </div>);   
-}
-
-function AddForm(props: {
-    itemToAdd: IItemToAdd,
-    handleInput: ((event: React.ChangeEvent<HTMLInputElement> ) => (void)),
-    onSubmit: (event: React.FormEvent<HTMLFormElement>) => void, 
-    onCancel: () => void,
-    userName: string}
-){
-    let formInputs = [];
-    for(let key of Object.keys(props.itemToAdd.item)) {
-        formInputs.push(createFormInput(key,  props.itemToAdd.item[key], props.handleInput));
-    }
-
-    formInputs.push(<input type="hidden" name="userName" key="userName" value={props.userName}></input>)
-
-    return (
-        <form className="Form light-border" onSubmit = {props.onSubmit}>
-            {formInputs}
-            <div>
-                <button className="space-right" type="submit">Add</button>
-                <button className="space-right" type="submit" onClick={props.onCancel}>Cancel</button> 
-            </div>
-        </form>
-    );
 }
 
 function AddButton(props: {onClick: () => void, itemName: string}) {
