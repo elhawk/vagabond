@@ -5,6 +5,7 @@ import { ItemFieldTypes, IItemToAdd, AddItem } from "./AddItem";
 interface IExpendituresViewProps {
     trip: ITrip;
     onCloseCallback: (() => void);
+    userName: string;
 }
 
 interface IExpendituresViewState {
@@ -50,7 +51,9 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
                 onItemAddedCallback={this.onExpenditureAddedCallback}
                 itemToAdd={this.newExpenditureInput}
                 itemName = {"Expenditure"} 
-                title={this.props.trip.name + " Spending"}/>
+                title={this.props.trip.name + " Spending"}        
+                action={"/expenditures/"}
+                userName={this.props.userName} />/>
             <BackToTrips onCloseCallback={this.props.onCloseCallback}/>
             {expendituresList}
         </div>);

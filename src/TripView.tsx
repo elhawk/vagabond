@@ -6,6 +6,8 @@ import { TripExpenditures } from './ExpendituresView';
 
 interface ITripViewProps {
     tripManager: TripManager;
+
+    userName: string;
 }
 
 interface ITripViewState {
@@ -41,6 +43,16 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
         "Budget": {name: "Budget", type: ItemFieldTypes.numberType, required: true},}
     };
 
+    onComponentMount() {
+        // TODO: fetch trips only for logged in user
+        fetch ('/trips')
+            .then(res => res.json())
+            .then(trips => {
+                this.props.tripManager.addServerTrips(trips);
+                this.setState({trips: this.props.tripManager.trips});
+            });
+    }
+
     render() {
         // Display add / list trips view
         if (this.state.tripToDisplay == -1) {
@@ -51,7 +63,8 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
             if (tripToDisplay != null) {
                 return <TripExpenditures
                     trip={tripToDisplay}
-                    onCloseCallback={this.onCloseExpendituresViewCallback}/>
+                    onCloseCallback={this.onCloseExpendituresViewCallback}
+                    userName={this.props.userName}/>
             } else {
                 console.log("Could not find trip with ID "+ this.state.tripToDisplay);
                 return null;
@@ -70,7 +83,9 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
                     onItemAddedCallback={this.onItemAddedCallback}
                     itemToAdd={this.newTripInput}
                     itemName = {"Trip"} 
-                    title={"Your Trips"} />
+                    title={"Your Trips"}
+                    action={"/trips/"}
+                    userName={this.props.userName} />
                 <TripList tripName={"Current"} trips={currentTrips} onTripClick={this.onTripClick}/>
                 <TripList tripName={"Upcoming"} trips={upcomingTrips} onTripClick={this.onTripClick}/>
                 <TripList tripName={"Past"} trips={pastTrips} onTripClick={this.onTripClick}/>

@@ -37,7 +37,7 @@ class App extends React.Component<{}, IAppState> {
   }
 
   render() {
-    let tripView = this.state.isLoggedIn ? <TripView tripManager={this.tripManager} /> : null;
+    let tripView = this.state.isLoggedIn ? <TripView tripManager={this.tripManager} userName={this.state.userName} /> : null;
 
     return (
       <div className="App">

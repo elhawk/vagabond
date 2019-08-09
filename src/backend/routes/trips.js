@@ -22,4 +22,18 @@ router.get('/', function(req, res, next) {
   ]); 
 });
 
+router.post('/', function(req, res, next) {
+    let userId = req.body.userId;
+
+    let trip = {
+        id: req.body.id,
+        name: req.body.name,
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
+        budget: req.body.budget
+    }
+
+    console.log(`Parsed user ${userId} trip ${trip}`);
+});
+
 module.exports = router;

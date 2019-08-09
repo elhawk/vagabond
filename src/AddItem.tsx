@@ -35,6 +35,12 @@ export interface IAddItemProps {
 
     // Title to display before the add button
     title: string;
+
+    // Url to post the added item to
+    action: string;
+
+    // User credentials to attach to the post
+    userName: string;
 }
 
 interface IAddItemState {
@@ -70,7 +76,8 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
                 itemToAdd={this.props.itemToAdd}
                 handleInput={this.handleInput}
                 onSubmit= {this.onSubmit}
-                onCancel={this.resetForm}/>
+                onCancel={this.resetForm}
+                userName={this.props.userName}/>
             flexDirectionClass = "column-flex-direction";
         } else {
             formOrButton = <AddButton
@@ -96,6 +103,19 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
         this.resetForm();
         
         event.preventDefault();
+    }
+
+    private async submitForm(event: React.FormEvent<HTMLFormElement>) : Promise<boolean> {
+        try {
+
+            let response = await fetch(this.props.action, {
+                method: "post",
+                body: JSON.stringify(event.target) // TODO fix
+            });
+            return true;
+        } catch (ex) {
+            return false;
+        }
     }
 
     resetForm() {
@@ -127,12 +147,15 @@ function AddForm(props: {
     itemToAdd: IItemToAdd,
     handleInput: ((event: React.ChangeEvent<HTMLInputElement> ) => (void)),
     onSubmit: (event: React.FormEvent<HTMLFormElement>) => void, 
-    onCancel: () => void}
+    onCancel: () => void,
+    userName: string}
 ){
     let formInputs = [];
     for(let key of Object.keys(props.itemToAdd.item)) {
         formInputs.push(createFormInput(key,  props.itemToAdd.item[key], props.handleInput));
     }
+
+    formInputs.push(<input type="hidden" name="userName" key="userName" value={props.userName}></input>)
 
     return (
         <form className="Form light-border" onSubmit = {props.onSubmit}>
