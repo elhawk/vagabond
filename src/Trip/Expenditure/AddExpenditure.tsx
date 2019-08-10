@@ -21,5 +21,4 @@ export function AddExpenditure(props: {userName: string, tripName: string, onIte
             )}
         />
     );
-
 }

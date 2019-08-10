@@ -36,9 +36,12 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
         this.onTripClick = this.onTripClick.bind(this);
     }
 
-    onComponentMount() {
-        // TODO: fetch trips only for logged in user
-        fetch ('/trips')
+    componentDidMount() {
+        // NOTE: this log not firing?
+        console.log("trip view onComponentMount");
+        let url = '/trips?user=' + this.props.userName;
+        console.log(url);
+        fetch (url)
             .then(res => res.json())
             .then(trips => {
                 console.log(trips);

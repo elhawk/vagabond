@@ -1,41 +1,45 @@
 var express = require('express');
 var router = express.Router();
+var storage = require('../storage/localFileStorage');
 
 /* GET trips listing. */
-router.get('/', function(req, res, next) {
-  // TODO: replace with non-stub data
-  res.json([
-    {
-        id: "2ee4dcdc-a2e6-4246-80db-3aa5af5ec795",
-        name: "Yellowstone",
-        startdate: new Date("2019-08-12"),
-        enddate: new Date("2019-08-23"),
-        budget: 5000,
-    },
-    {
-        id: "7466fe95-55b8-407d-a34a-1f1b8d3aede6",
-        name: "Portland",
-        startdate: new Date("2019-09-10"),
-        enddate: new Date("2019-09-15"),
-        budget: 600,
-    }
-  ]); 
+router.get('/', async (req, res, next) => {
+  let tripsResponse;
+
+  try {
+    tripsResponse = await storage.readTrips(req.query.user);
+  } catch (err) {
+    console.log(`Error reading trips ${err}`);
+    tripsResponse = {succeeded: false};
+  }
+
+  if (tripsResponse.succeeded) {
+    res.json(tripsResponse.trips);
+  } else {
+    res.status(500);
+    res.end();
+  }
 });
 
-router.post('/', function(req, res, next) {
-    console.log(req.body);
+router.post('/', async (req, res, next) => {
     let userId = req.body.userId;
 
     let trip = {
         id: req.body.id,
         name: req.body.name,
-        startDate: req.body.startDate,
-        endDate: req.body.endDate,
+        startdate: req.body.startdate,
+        enddate: req.body.enddate,
         budget: req.body.budget
     }
 
-    console.log(`Parsed user ${userId} trip ${trip}`);
+    let writeSucceeded = false;
+    try {
+      writeSucceeded = await storage.writeTrip(userId, trip);
+    } catch (err) {
+      console.log(`error writing file ${err}`);
+    } 
 
+    res.status(writeSucceeded ? 200 : 500);
     res.end();
 });
 

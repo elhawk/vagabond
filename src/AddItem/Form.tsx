@@ -44,8 +44,7 @@ export class Form extends React.Component<IFormProps> {
         this.formValues.id = undefined;
     }
 
-    private async submitForm(): Promise<boolean>{
-        
+    private async submitForm(): Promise<boolean>{       
         try {
             let response = await fetch(this.props.action, {
                 method: "post",
