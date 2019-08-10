@@ -1,9 +1,9 @@
 import React from 'react';
-import { Form } from './Form';
+import { Form, IFormValues } from './Form';
 
 export interface IAddItemProps {
     // callback when a new item is added
-    //onItemAddedCallback(itemAdded : IItemToAdd) : void;
+    onItemAddedCallback(itemAdded : IFormValues) : void;
 
     // fields to render in the form.  Callback to share state between fields and form
     renderFields: (onFieldChangeCallback: (e: React.FormEvent<HTMLInputElement>) => void) => React.ReactNode
@@ -34,8 +34,6 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
 
         this.state = {showForm: false};
 
-        this.handleInput = this.handleInput.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
         this.resetForm = this.resetForm.bind(this);
         this.onAddClick = this.onAddClick.bind(this);
     }
@@ -51,7 +49,7 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
             formOrButton = <Form 
                 action = {this.props.action}
                 renderFields = {this.props.renderFields}
-                onSubmit = {this.onSubmit}
+                onSuccessfulPost = {this.props.onItemAddedCallback}
                 onCancel = {this.resetForm}
                 userName = {this.props.userName}/>
             flexDirectionClass = "column-flex-direction";
@@ -73,36 +71,8 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
         this.setState({showForm: true});
     }
 
-    onSubmit(event: React.FormEvent<HTMLFormElement>) {
-        //this.props.onItemAddedCallback(clone(this.currentItem));
-        
-        this.resetForm();
-        
-        event.preventDefault();
-    }
-
-    private async submitForm(event: React.FormEvent<HTMLFormElement>) : Promise<boolean> {
-        try {
-
-            let response = await fetch(this.props.action, {
-                method: "post",
-                body: JSON.stringify(event.target) // TODO fix
-            });
-            return true;
-        } catch (ex) {
-            return false;
-        }
-    }
-
     resetForm() {
-        //this.currentItem = clone(this.props.itemToAdd);
         this.setState({showForm: false});
-    }
-
-    // We want to save off what the user has entered into the form so that we have it
-    // handy when the form is submitted
-    handleInput(event: React.ChangeEvent<HTMLInputElement>) {
-        //this.currentItem.item[event.target.name].value = event.target.value;
     }
 }
 

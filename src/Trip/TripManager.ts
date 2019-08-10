@@ -4,9 +4,9 @@ import { IDateWrapper, DateWrapper } from "../utils/DateWrapper";
 export interface ITripManager {
     trips: ITrip[];
 
-    addTrip(trip: ITrip) : number;
+    addServerTrips(trips: object[]) : void;
 
-    getTripById(id: number) : ITrip | null;
+    getTripById(id: string) : ITrip | null;
 }
 
 export class TripManager implements ITripManager {
@@ -24,10 +24,10 @@ export class TripManager implements ITripManager {
             try {
                 let parsedTrip: ITrip = new Trip(
                     jsonTrip["name"].toString(),
-                    new Date(jsonTrip["startDate"]),
-                    new Date(jsonTrip["endDate"]),
+                    new Date(jsonTrip["startdate"]),
+                    new Date(jsonTrip["enddate"]),
                     parseFloat(jsonTrip["budget"]),
-                    parseInt(jsonTrip["id"]),
+                    jsonTrip["id"].toString(),
                     []
                 );
                 this.trips.push(parsedTrip);
@@ -35,11 +35,6 @@ export class TripManager implements ITripManager {
                 console.log("Unable to parse addServerTrips")
             };
         });
-    }
-
-    addTrip(trip: ITrip): number {
-        this.trips.push(trip);
-        return trip.id;
     }
 
     getCurrentTrips() : ITrip[] {
@@ -75,8 +70,8 @@ export class TripManager implements ITripManager {
         return pastTrips;
     }
 
-    getTripById(id: number): ITrip | null {
-        let index = this.trips.findIndex(element => element.id == id);
+    getTripById(id: string): ITrip | null {
+        let index = this.trips.findIndex(element => element.id === id);
         if (index == -1) {
             return null;
         }

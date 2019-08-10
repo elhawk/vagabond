@@ -1,6 +1,7 @@
 import React from "react";
 import { ITrip, IExpenditure } from "../trip";
 import { AddExpenditure } from "./AddExpenditure";
+import { IFormValues } from "../../AddItem/Form";
 
 interface IExpendituresViewProps {
     trip: ITrip;
@@ -18,8 +19,11 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
         super(props);
 
         this.state = {expenditures: props.trip.expenditures};
+        this.onExpenditureAddedCallback = this.onExpenditureAddedCallback.bind(this);
+    }
 
-       // this.onExpenditureAddedCallback = this.onExpenditureAddedCallback.bind(this);
+    private onExpenditureAddedCallback(item: IFormValues) {
+        
     }
 
     render() {
@@ -28,12 +32,12 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
         <div>
             <AddExpenditure 
                 tripName={this.props.trip.name}        
-                userName={this.props.userName} />
+                userName={this.props.userName}
+                onItemAddedCallback={this.onExpenditureAddedCallback} />
             <BackToTrips onCloseCallback={this.props.onCloseCallback}/>
             {expendituresList}
         </div>);
     }
-
 }
 
 function SingleExpenditure(expenditure: IExpenditure) {

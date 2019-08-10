@@ -12,14 +12,14 @@ class DateWrapperMock implements IDateWrapper {
 
 it ("Returns correct set of current trips when they exist", ()=> {
     // set up a list of trips
-    let pastTrip1 = Trip.newTrip("Past1", new Date("2019-07-01"), new Date("2019-07-11"), 1000);
-    let pastTrip2 = Trip.newTrip("Past2", new Date("2019-06-01"), new Date("2019-06-11"), 1000);
+    let pastTrip1 = new Trip("Past1", new Date("2019-07-01"), new Date("2019-07-11"), 1000, "guidId", []);
+    let pastTrip2 = new Trip("Past2", new Date("2019-06-01"), new Date("2019-06-11"), 1000, "guidId", []);
 
-    let currentTrip1 = Trip.newTrip("Current1", new Date("2019-08-01"), new Date("2019-08-11"), 1000);
-    let currentTrip2 = Trip.newTrip("Current2", new Date("2019-07-30"), new Date("2019-08-05"), 1000);
+    let currentTrip1 = new Trip("Current1", new Date("2019-08-01"), new Date("2019-08-11"), 1000, "guidId", []);
+    let currentTrip2 = new Trip("Current2", new Date("2019-07-30"), new Date("2019-08-05"), 1000, "guidId", []);
 
-    let upcomingTrip1 = Trip.newTrip("Upcoming1", new Date("2019-08-11"), new Date("2019-08-14"), 1000);
-    let upcomingTrip2 = Trip.newTrip("Upcoming2", new Date("2019-09-01"), new Date("2019-09-11"), 1000);
+    let upcomingTrip1 = new Trip("Upcoming1", new Date("2019-08-11"), new Date("2019-08-14"), 1000, "guidId", []);
+    let upcomingTrip2 = new Trip("Upcoming2", new Date("2019-09-01"), new Date("2019-09-11"), 1000, "guidId", []);
 
     let trips : Trip[] = [pastTrip1, pastTrip2, currentTrip1, currentTrip2, upcomingTrip1, upcomingTrip2];
 
@@ -37,11 +37,11 @@ it ("Returns correct set of current trips when they exist", ()=> {
 
 it ("Returns empty list when there are no current trips", ()=> {
     // set up a list of trips 
-    let pastTrip1 = Trip.newTrip("Past1", new Date("2019-07-01"), new Date("2019-07-11"), 1000);
-    let pastTrip2 = Trip.newTrip("Past2", new Date("2019-06-01"), new Date("2019-06-11"), 1000);
+    let pastTrip1 = new Trip("Past1", new Date("2019-07-01"), new Date("2019-07-11"), 1000, "guidId", []);
+    let pastTrip2 = new Trip("Past2", new Date("2019-06-01"), new Date("2019-06-11"), 1000, "guidId", []);
 
-    let upcomingTrip1 = Trip.newTrip("Upcoming1", new Date("2019-08-11"), new Date("2019-08-14"), 1000);
-    let upcomingTrip2 = Trip.newTrip("Upcoming2", new Date("2019-09-01"), new Date("2019-09-11"), 1000);
+    let upcomingTrip1 = new Trip("Upcoming1", new Date("2019-08-11"), new Date("2019-08-14"), 1000, "guidId", []);
+    let upcomingTrip2 = new Trip("Upcoming2", new Date("2019-09-01"), new Date("2019-09-11"), 1000, "guidId", []);
 
     let trips : Trip[] = [pastTrip1, pastTrip2, upcomingTrip1, upcomingTrip2];
 
@@ -57,14 +57,14 @@ it ("Returns empty list when there are no current trips", ()=> {
 
 it ("Returns correct set of past trips when they exist", ()=> {
     // set up a list of trips
-    let pastTrip1 = Trip.newTrip("Past1", new Date("2019-07-01"), new Date("2019-07-11"), 1000);
-    let pastTrip2 = Trip.newTrip("Past2", new Date("2019-06-01"), new Date("2019-06-11"), 1000);
+    let pastTrip1 = new Trip("Past1", new Date("2019-07-01"), new Date("2019-07-11"), 1000, "guidId", []);
+    let pastTrip2 = new Trip("Past2", new Date("2019-06-01"), new Date("2019-06-11"), 1000, "guidId", []);
 
-    let currentTrip1 = Trip.newTrip("Current1", new Date("2019-08-01"), new Date("2019-08-11"), 1000);
-    let currentTrip2 = Trip.newTrip("Current2", new Date("2019-07-30"), new Date("2019-08-05"), 1000);
+    let currentTrip1 = new Trip("Current1", new Date("2019-08-01"), new Date("2019-08-11"), 1000, "guidId", []);
+    let currentTrip2 = new Trip("Current2", new Date("2019-07-30"), new Date("2019-08-05"), 1000, "guidId", []);
 
-    let upcomingTrip1 = Trip.newTrip("Upcoming1", new Date("2019-08-11"), new Date("2019-08-14"), 1000);
-    let upcomingTrip2 = Trip.newTrip("Upcoming2", new Date("2019-09-01"), new Date("2019-09-11"), 1000);
+    let upcomingTrip1 = new Trip("Upcoming1", new Date("2019-08-11"), new Date("2019-08-14"), 1000, "guidId", []);
+    let upcomingTrip2 = new Trip("Upcoming2", new Date("2019-09-01"), new Date("2019-09-11"), 1000, "guidId", []);
 
     let trips : Trip[] = [pastTrip1, pastTrip2, currentTrip1, currentTrip2, upcomingTrip1, upcomingTrip2];
 
@@ -82,11 +82,11 @@ it ("Returns correct set of past trips when they exist", ()=> {
 
 it ("Returns empty list when there are no past trips", ()=> {
     // set up a list of trips 
-    let currentTrip1 = Trip.newTrip("Current1", new Date("2019-08-01"), new Date("2019-08-11"), 1000);
-    let currentTrip2 = Trip.newTrip("Current2", new Date("2019-07-30"), new Date("2019-08-05"), 1000);
+    let currentTrip1 = new Trip("Current1", new Date("2019-08-01"), new Date("2019-08-11"), 1000, "guidId", []);
+    let currentTrip2 = new Trip("Current2", new Date("2019-07-30"), new Date("2019-08-05"), 1000, "guidId", []);
 
-    let upcomingTrip1 = Trip.newTrip("Upcoming1", new Date("2019-08-11"), new Date("2019-08-14"), 1000);
-    let upcomingTrip2 = Trip.newTrip("Upcoming2", new Date("2019-09-01"), new Date("2019-09-11"), 1000);
+    let upcomingTrip1 = new Trip("Upcoming1", new Date("2019-08-11"), new Date("2019-08-14"), 1000, "guidId", []);
+    let upcomingTrip2 = new Trip("Upcoming2", new Date("2019-09-01"), new Date("2019-09-11"), 1000, "guidId", []);
 
     let trips : Trip[] = [currentTrip1, currentTrip2, upcomingTrip1, upcomingTrip2];
 
@@ -102,14 +102,14 @@ it ("Returns empty list when there are no past trips", ()=> {
 
 it ("Returns correct set of upcoming trips when they exist", ()=> {
     // set up a list of trips
-    let pastTrip1 = Trip.newTrip("Past1", new Date("2019-07-01"), new Date("2019-07-11"), 1000);
-    let pastTrip2 = Trip.newTrip("Past2", new Date("2019-06-01"), new Date("2019-06-11"), 1000);
+    let pastTrip1 = new Trip("Past1", new Date("2019-07-01"), new Date("2019-07-11"), 1000, "guidId", []);
+    let pastTrip2 = new Trip("Past2", new Date("2019-06-01"), new Date("2019-06-11"), 1000, "guidId", []);
 
-    let currentTrip1 = Trip.newTrip("Current1", new Date("2019-08-01"), new Date("2019-08-11"), 1000);
-    let currentTrip2 = Trip.newTrip("Current2", new Date("2019-07-30"), new Date("2019-08-05"), 1000);
+    let currentTrip1 = new Trip("Current1", new Date("2019-08-01"), new Date("2019-08-11"), 1000, "guidId", []);
+    let currentTrip2 = new Trip("Current2", new Date("2019-07-30"), new Date("2019-08-05"), 1000, "guidId", []);
 
-    let upcomingTrip1 = Trip.newTrip("Upcoming1", new Date("2019-08-11"), new Date("2019-08-14"), 1000);
-    let upcomingTrip2 = Trip.newTrip("Upcoming2", new Date("2019-09-01"), new Date("2019-09-11"), 1000);
+    let upcomingTrip1 = new Trip("Upcoming1", new Date("2019-08-11"), new Date("2019-08-14"), 1000, "guidId", []);
+    let upcomingTrip2 = new Trip("Upcoming2", new Date("2019-09-01"), new Date("2019-09-11"), 1000, "guidId", []);
 
     let trips : Trip[] = [pastTrip1, pastTrip2, currentTrip1, currentTrip2, upcomingTrip1, upcomingTrip2];
 
@@ -127,11 +127,11 @@ it ("Returns correct set of upcoming trips when they exist", ()=> {
 
 it ("Returns empty list when there are no upcoming trips", ()=> {
     // set up a list of trips 
-    let currentTrip1 = Trip.newTrip("Current1", new Date("2019-08-01"), new Date("2019-08-11"), 1000);
-    let currentTrip2 = Trip.newTrip("Current2", new Date("2019-07-30"), new Date("2019-08-05"), 1000);
+    let currentTrip1 = new Trip("Current1", new Date("2019-08-01"), new Date("2019-08-11"), 1000, "guidId", []);
+    let currentTrip2 = new Trip("Current2", new Date("2019-07-30"), new Date("2019-08-05"), 1000, "guidId", []);
 
-    let pastTrip1 = Trip.newTrip("Past1", new Date("2019-07-01"), new Date("2019-07-11"), 1000);
-    let pastTrip2 = Trip.newTrip("Past2", new Date("2019-06-01"), new Date("2019-06-11"), 1000);
+    let pastTrip1 = new Trip("Past1", new Date("2019-07-01"), new Date("2019-07-11"), 1000, "guidId", []);
+    let pastTrip2 = new Trip("Past2", new Date("2019-06-01"), new Date("2019-06-11"), 1000, "guidId", []);
 
     let trips : Trip[] = [currentTrip1, currentTrip2, pastTrip1, pastTrip2];
 

@@ -6,23 +6,24 @@ router.get('/', function(req, res, next) {
   // TODO: replace with non-stub data
   res.json([
     {
-        id: 1234,
+        id: "2ee4dcdc-a2e6-4246-80db-3aa5af5ec795",
         name: "Yellowstone",
-        startDate: new Date("2019-08-12"),
-        endDate: new Date("2019-08-23"),
+        startdate: new Date("2019-08-12"),
+        enddate: new Date("2019-08-23"),
         budget: 5000,
     },
     {
-        id: 5678,
+        id: "7466fe95-55b8-407d-a34a-1f1b8d3aede6",
         name: "Portland",
-        startDate: new Date("2019-09-10"),
-        endDate: new Date("2019-09-15"),
+        startdate: new Date("2019-09-10"),
+        enddate: new Date("2019-09-15"),
         budget: 600,
     }
   ]); 
 });
 
 router.post('/', function(req, res, next) {
+    console.log(req.body);
     let userId = req.body.userId;
 
     let trip = {
@@ -34,6 +35,8 @@ router.post('/', function(req, res, next) {
     }
 
     console.log(`Parsed user ${userId} trip ${trip}`);
+
+    res.end();
 });
 
 module.exports = router;

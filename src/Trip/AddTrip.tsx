@@ -1,14 +1,16 @@
 import React from 'react';
 import { AddItem } from '../AddItem/AddItem';
 import { Field } from '../AddItem/Field';
+import { IFormValues } from '../AddItem/Form';
 
-export function AddTrip(props: {userName: string}) {
+export function AddTrip(props: {userName: string, onItemAddedCallback: (item: IFormValues) => void}) {
     return (
         <AddItem
             itemName = {"Trip"} 
             title={"Your Trips"}
             action={"/trips/"}
             userName={props.userName}
+            onItemAddedCallback = {props.onItemAddedCallback}
             renderFields={(onFieldChange: (e: React.FormEvent<HTMLInputElement>) => void) => (
                 <React.Fragment>
                     <Field id="name" label="Name" fieldType="string" required={true} onChange={onFieldChange} />

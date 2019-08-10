@@ -1,5 +1,5 @@
 export interface ITrip {
-    id: number;
+    id: string;
     name: string;
     startDate: Date;
     endDate: Date;
@@ -25,25 +25,12 @@ export interface IExpenditure {
 
 export class Trip implements ITrip {
 
-    // Add a new trip with a new ID and no expenditures
-    static newTrip(
-        name: string,
-        startDate: Date,
-        endDate: Date,
-        budget: number 
-    ) : Trip {
-         // TODO: make id generation use GUIDs
-         let id = Math.floor(Math.random() * 10000);
-
-        return new Trip(name, startDate, endDate, budget, id, []);
-    }
-
     constructor (
         public name: string,
         public startDate: Date,
         public endDate: Date,
         public budget: number,
-        public id: number,
+        public id: string,
         public expenditures: IExpenditure[]) {
            
     }
