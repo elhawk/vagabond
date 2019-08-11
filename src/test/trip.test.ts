@@ -1,4 +1,4 @@
-import {Trip, Expenditure} from '../Trip/trip';
+import {Trip, Expenditure, parseTrip} from '../Trip/trip';
 
 // Trip tests -- add expenditure
 it("Doesn't let you add expenditure outside of trip dates", () => {
@@ -56,4 +56,135 @@ it ("Removing a nonexistent expenditure returns null", ()=> {
          []);
 
     expect(trip.removeItem(35)).toEqual(null);
+});
+
+// ParseTrip tests
+
+it("Parsing undefined or null trip returns succeeded false", () => {
+    let undefinedTrip = undefined;
+    let nullTrip = null;
+
+    expect(parseTrip(undefinedTrip).succeeded).toEqual(false);
+    expect(parseTrip(nullTrip).succeeded).toEqual(false);
+});
+
+it("Trip with no name or empty name returns succeeded false", () => {
+    let noName = {
+        startdate: "2019-10-01T00:00:00.000Z",
+        enddate: "2019-10-03T00:00:00.000Z",
+        budget: 1000,
+        id: "guid" 
+    };
+
+
+    let emptyName = {
+        name: "",
+        startdate: "2019-10-01T00:00:00.000Z",
+        enddate: "2019-10-03T00:00:00.000Z",
+        budget: 1000,
+        id: "guid" 
+    };
+
+    expect(parseTrip(noName).succeeded).toEqual(false);
+    expect(parseTrip(emptyName).succeeded).toEqual(false);
+});
+
+it("Trip with no id or empty id returns succeeded false", () => {
+    let noId = {
+        name: "test trip",
+        startdate: "2019-10-01T00:00:00.000Z",
+        enddate: "2019-10-03T00:00:00.000Z",
+        budget: 1000,
+    };
+
+
+    let emptyId = {
+        name: "test trip",
+        startdate: "2019-10-01T00:00:00.000Z",
+        enddate: "2019-10-03T00:00:00.000Z",
+        budget: 1000,
+        id: "" 
+    };
+
+    expect(parseTrip(noId).succeeded).toEqual(false);
+    expect(parseTrip(emptyId).succeeded).toEqual(false);
+});
+
+it("Trip with no startDate or invalid startDate returns succeeded false", () => {
+    let noStartDate = {
+        name: "test trip",
+        enddate: "2019-10-03T00:00:00.000Z",
+        budget: 1000,
+        id: "guid"
+    };
+
+
+    let invalidStartDate = {
+        name: "test trip",
+        startdate: "not a date",
+        enddate: "2019-10-03T00:00:00.000Z",
+        budget: 1000,
+        id: "guid" 
+    };
+
+    expect(parseTrip(noStartDate).succeeded).toEqual(false);
+    expect(parseTrip(invalidStartDate).succeeded).toEqual(false);
+});
+
+it("Trip with no end date or invalid end date returns succeeded false", () => {
+    let noEndDate = {
+        name: "test trip",
+        startdate: "2019-10-03T00:00:00.000Z",
+        budget: 1000,
+        id: "guid"
+    };
+
+
+    let invalidEndDate = {
+        name: "test trip",
+        startdate: "2019-10-03T00:00:00.000Z",
+        enddate: "not a date",
+        budget: 1000,
+        id: "guid" 
+    };
+
+    expect(parseTrip(noEndDate).succeeded).toEqual(false);
+    expect(parseTrip(invalidEndDate).succeeded).toEqual(false);
+});
+
+
+it("Trip with no budget or invalid budget returns succeeded false", () => {
+    let noBudget = {
+        name: "test trip",
+        startdate: "2019-10-03T00:00:00.000Z",
+        enddate: "2019-10-03T00:00:00.000Z",
+        id: "guid"
+    };
+
+
+    let invalidBudget = {
+        name: "test trip",
+        startdate: "2019-10-01T00:00:00.000Z",
+        enddate: "2019-10-03T00:00:00.000Z",
+        budget: "not a number",
+        id: "guid" 
+    };
+
+    expect(parseTrip(noBudget).succeeded).toEqual(false);
+    expect(parseTrip(invalidBudget).succeeded).toEqual(false);
+});
+
+it("Trip with all fields valids returns succeeded true, trip object", () => {
+    let validTrip = {
+        name: "test trip",
+        startdate: "2019-10-01T00:00:00.000Z",
+        enddate: "2019-10-03T00:00:00.000Z",
+        budget: 1000,
+        id: "guid" 
+    };
+
+    let parseResult = parseTrip(validTrip);
+    expect(parseResult.succeeded).toEqual(true);
+    expect(parseResult.trip).toBeDefined();
+    expect((parseResult.trip as Trip).name).toEqual(validTrip.name);
 });

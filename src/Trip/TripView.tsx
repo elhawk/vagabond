@@ -12,7 +12,8 @@ interface ITripViewProps {
 }
 
 interface ITripViewState {
-    // All the trips we are rendering
+    // All the trips we are rendering.  I don't love how there's 2 sources of truth
+    // between this and the trips manager -- this should always be assigned from the trips manager.
     trips: ITrip[];
 
     // A single trip to display the expenditures, by its id.  When the id is empty
@@ -28,7 +29,7 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
         super(props);
 
         this.state = {
-            trips: [],
+            trips: props.tripManager.trips,
             tripToDisplay: "",};
 
         this.onItemAddedCallback = this.onItemAddedCallback.bind(this);
@@ -37,10 +38,7 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
     }
 
     componentDidMount() {
-        // NOTE: this log not firing?
-        console.log("trip view onComponentMount");
         let url = '/trips?user=' + this.props.userName;
-        console.log(url);
         fetch (url)
             .then(res => res.json())
             .then(trips => {
@@ -88,8 +86,9 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
     }
 
     onItemAddedCallback(item: IFormValues) {
+        // this callback should only be called when the trip has successfully been saved
+        // on the server
         this.props.tripManager.addServerTrips([item]);
-
         this.setState({trips: this.props.tripManager.trips});
     }
 
