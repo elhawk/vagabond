@@ -14,7 +14,7 @@ router.get('/', async (req, res, next) => {
   }
 
   if (tripsResponse.succeeded) {
-    res.json(tripsResponse.trips);
+    res.json(tripsResponse.jsonData);
   } else {
     res.status(500);
     res.end();

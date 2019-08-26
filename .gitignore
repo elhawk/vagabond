@@ -11,6 +11,9 @@
 # production
 /build
 
+#userData (stored locally for test)
+/src/backend/storage/userdata
+
 # misc
 .DS_Store
 .env.local

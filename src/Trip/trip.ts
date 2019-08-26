@@ -1,3 +1,5 @@
+import { IExpenditure } from "./Expenditure/Expenditure";
+
 export interface ITrip {
     id: string;
     name: string;
@@ -12,15 +14,6 @@ export interface ITrip {
 
     // Removes an expenditure from the trip and returns the removed item
     removeItem(id: number) : IExpenditure | null;
-}
-
-export interface IExpenditure {
-    id: number;
-    dates: Date[];
-    amount: number;
-    description: string;
-    category: string;
-    location: string;
 }
 
 export class Trip implements ITrip {
@@ -64,21 +57,6 @@ export class Trip implements ITrip {
         
         return this.expenditures.splice(index, 1)[0];
 
-    }
-}
-
-export class Expenditure implements IExpenditure {
-
-    id: number;        
-
-    constructor(
-        public dates: Date[],
-        public amount: number,
-        public description: string = "",
-        public category: string = "uncategorized",
-        public location: string = "") {
-        // TODO: make ID generation use GUIDs
-        this.id = Math.floor(Math.random()*10000);
     }
 }
 

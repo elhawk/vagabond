@@ -1,4 +1,5 @@
-import {Trip, Expenditure, parseTrip} from '../Trip/trip';
+import {Trip, parseTrip} from '../Trip/trip';
+import { Expenditure } from "../Trip/Expenditure/Expenditure";
 
 // Trip tests -- add expenditure
 it("Doesn't let you add expenditure outside of trip dates", () => {
