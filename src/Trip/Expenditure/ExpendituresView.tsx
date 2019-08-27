@@ -12,6 +12,7 @@ interface IExpendituresViewProps {
 
 interface IExpendituresViewState {
     expenditures: IExpenditure[];
+    fetchedServerExpenditures: boolean;
 }
 
 export class TripExpenditures extends React.Component<IExpendituresViewProps, IExpendituresViewState>{
@@ -19,11 +20,16 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
     constructor(props: IExpendituresViewProps) {
         super(props);
 
-        this.state = {expenditures: props.trip.expenditures};
+        this.state = {expenditures: [], fetchedServerExpenditures: false};
         this.onExpenditureAddedCallback = this.onExpenditureAddedCallback.bind(this);
     }
 
     componentDidMount() {
+        if (this.state.fetchedServerExpenditures) {
+            // only fetch the expenditures from the server once per session
+            return;
+        }
+
         let url = '/expenditures?user=' + this.props.userName + "&tripId=" + this.props.trip.id;
         fetch (url)
             .then(res => res.json())
@@ -34,15 +40,24 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
                         this.state.expenditures.push(parsedExpenditure.expenditure);
                     } else {
                         console.log(`error parsing expenditure`);
-                        console.log(ex);
                     }
                 }
-                this.setState({expenditures: this.state.expenditures});
+                this.setState({expenditures: this.state.expenditures, fetchedServerExpenditures: true});
             });
     }
 
     private onExpenditureAddedCallback(item: IFormValues) {
+        // this should only be called when the expenditure has successfully been saved to the server
+        // todo: remove dates hack when adding multiple dates is supported on the client
+        item.dates = [item.date];
+        let addedEx = parseExpenditure(item);
 
+        if (addedEx.succeeded && addedEx.expenditure != undefined) {
+            this.state.expenditures.push(addedEx.expenditure);
+            this.setState({expenditures: this.state.expenditures});
+        } else {
+            console.log('unexpected error parsing expenditure after roundtrip');
+        }
     }
 
     render() {
