@@ -47,7 +47,6 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
 
     render() {
         let expendituresList;
-        console.log(this.state.expenditures);
         if (this.state.expenditures.length != 0) {
             expendituresList = this.state.expenditures.map(SingleExpenditure);
         }

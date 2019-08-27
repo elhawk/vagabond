@@ -1,5 +1,5 @@
 export interface IExpenditure {
-    id: number;
+    id: string;
     dates: Date[];
     amount: number;
     description: string;
@@ -8,16 +8,14 @@ export interface IExpenditure {
 }
 
 export class Expenditure implements IExpenditure {
-    id: number;
 
     constructor(
+        public id: string,
         public dates: Date[],
         public amount: number,
         public description: string = "",
         public category: string = "uncategorized",
         public location: string = "") {
-        // TODO: make ID generation use GUIDs
-        this.id = Math.floor(Math.random() * 10000);
     }
 }
 
@@ -69,14 +67,13 @@ export function parseExpenditure(jsonExpenditure: any) : {succeeded: boolean, ex
         category = "";
     }
 
-    
     let location = jsonExpenditure["location"];
     if (location === undefined) {
         // location is optional
         location = "";
     }
 
-    let parsedExpenditure = new Expenditure(parsedDates, amount, description, category, location);
+    let parsedExpenditure = new Expenditure(id, parsedDates, amount, description, category, location);
 
     return {succeeded: true, expenditure: parsedExpenditure};
 }

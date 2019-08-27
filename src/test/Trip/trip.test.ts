@@ -1,39 +1,39 @@
-import {Trip, parseTrip} from '../Trip/trip';
-import { Expenditure } from "../Trip/Expenditure/Expenditure";
+import {Trip, parseTrip} from '../../Trip/trip';
+import { Expenditure } from "../../Trip/Expenditure/Expenditure";
 
 // Trip tests -- add expenditure
 it("Doesn't let you add expenditure outside of trip dates", () => {
     let trip : Trip = new Trip("Test Trip", new Date("2019-01-01"), new Date("2019-01-10"), 1000, "guidId", []);
-    let expenditure: Expenditure = new Expenditure([new Date("2019-01-20")], 10);
+    let expenditure: Expenditure = new Expenditure("guidid", [new Date("2019-01-20")], 10);
     expect(trip.addItem(expenditure)).toEqual(false);
 });
 
 it("Doesn't let you add expenditure where some dates are outside trip dates", () => {
     let trip : Trip = new Trip("Test Trip", new Date("2019-01-01"), new Date("2019-01-10"), 1000, "guidId", []);
-    let expenditure: Expenditure = new Expenditure([new Date("2019-01-02"), new Date("2019-01-20")], 10);
+    let expenditure: Expenditure = new Expenditure("guidid", [new Date("2019-01-02"), new Date("2019-01-20")], 10);
     expect(trip.addItem(expenditure)).toEqual(false);
 });
 
 it("Lets you add expenditure where dates are start or end date", () => {
     let trip : Trip = new Trip("Test Trip", new Date("2019-01-01"), new Date("2019-01-10"), 1000, "guidId", []);
 
-    let startDateExpenditure: Expenditure = new Expenditure([new Date("2019-01-01")], 10);
+    let startDateExpenditure: Expenditure = new Expenditure("guidid", [new Date("2019-01-01")], 10);
     expect(trip.addItem(startDateExpenditure)).toEqual(true);
 
-    let endDateExpenditure: Expenditure = new Expenditure([new Date("2019-01-10")], 10);
+    let endDateExpenditure: Expenditure = new Expenditure("guidid", [new Date("2019-01-10")], 10);
     expect(trip.addItem(endDateExpenditure)).toEqual(true);
 });
 
 it("Lets you add expenditure where all dates are in range", () => {
     let trip : Trip = new Trip("Test Trip", new Date("2019-01-01"), new Date("2019-01-10"), 1000, "guidId", []);
 
-    let expenditure: Expenditure = new Expenditure([new Date("2019-01-02"), new Date("2019-01-03")], 10);
+    let expenditure: Expenditure = new Expenditure("guidid", [new Date("2019-01-02"), new Date("2019-01-03")], 10);
     expect(trip.addItem(expenditure)).toEqual(true);
 });
 
 //Trip tests -- remove item
 it ("Removing an existing expenditure works", ()=> {
-    let expenditure = new Expenditure([new Date("2019-01-02")], 10);
+    let expenditure = new Expenditure("guidid", [new Date("2019-01-02")], 10);
 
     let trip: Trip = new Trip(
         "Test Trip",
@@ -56,7 +56,7 @@ it ("Removing a nonexistent expenditure returns null", ()=> {
          "guidId",
          []);
 
-    expect(trip.removeItem(35)).toEqual(null);
+    expect(trip.removeItem("doesn't exist")).toEqual(null);
 });
 
 // ParseTrip tests

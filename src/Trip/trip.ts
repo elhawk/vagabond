@@ -13,7 +13,7 @@ export interface ITrip {
     addItem(item: IExpenditure) : boolean;
 
     // Removes an expenditure from the trip and returns the removed item
-    removeItem(id: number) : IExpenditure | null;
+    removeItem(id: string) : IExpenditure | null;
 }
 
 export class Trip implements ITrip {
@@ -48,7 +48,7 @@ export class Trip implements ITrip {
         return true;
     }
 
-    removeItem(id: number): IExpenditure | null {
+    removeItem(id: string): IExpenditure | null {
         let index = this.expenditures.findIndex(element => (element.id == id));
         
         // not found
