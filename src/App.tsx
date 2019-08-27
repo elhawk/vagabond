@@ -2,8 +2,8 @@ import React from 'react';
 import './App.css';
 import {Header} from './Header';
 import {LoginControl} from './LoginControl';
-import {TripManager} from './TripManager';
-import {TripView} from './TripView';
+import {TripManager} from './Trip/TripManager';
+import {TripView} from './Trip/TripView';
 
 interface IAppState {
   // login related state
@@ -25,12 +25,19 @@ class App extends React.Component<{}, IAppState> {
   }
 
   onLoggedInChange(loggedIn: boolean, userName: string) {
-    console.log("userName" + userName);
     this.setState({isLoggedIn: loggedIn, userName: userName});
+
+    // TODO: fetch trips only for logged in user
+    fetch ('/trips')
+      .then(res => res.json())
+      .then(trips => {
+        this.tripManager.addServerTrips(trips);
+        this.setState({}); // todo: move the trips list somewhere that the state will re-render correctly
+      });
   }
 
   render() {
-    let tripView = this.state.isLoggedIn ? <TripView tripManager={this.tripManager} /> : null;
+    let tripView = this.state.isLoggedIn ? <TripView tripManager={this.tripManager} userName={this.state.userName} /> : null;
 
     return (
       <div className="App">

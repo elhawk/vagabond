@@ -1,24 +1,40 @@
-import { ITrip } from "./trip";
-import { IDateWrapper, DateWrapper } from "./utils/DateWrapper";
+import { ITrip, Trip, parseTrip } from "./trip";
+import { IDateWrapper, DateWrapper } from "../utils/DateWrapper";
 
 export interface ITripManager {
     trips: ITrip[];
 
-    addTrip(trip: ITrip) : number;
+    addServerTrips(trips: object[]) : void;
 
-    getTripById(id: number) : ITrip | null;
+    getTripById(id: string) : ITrip | null;
 }
 
 export class TripManager implements ITripManager {
+
     constructor(
         public trips: ITrip[] = [],
         public dateWrapper : IDateWrapper = new DateWrapper()) {
 
     }
 
-    addTrip(trip: ITrip): number {
-        this.trips.push(trip);
-        return trip.id;
+    isTripValid(trip: object) {
+
+    }
+
+    // The server returns a list of trips serialized into JSON.
+    // populate them into Trip objects and add them to our trips list.
+    addServerTrips(serverTrips: object[]) {
+        serverTrips.forEach((jsonTrip: any) => {
+            let tripParseResult = parseTrip(jsonTrip);
+
+            if (!tripParseResult.succeeded) {
+                console.log(`unable to parse server trip`);
+            } else if (tripParseResult.trip != undefined){
+                this.trips.push(tripParseResult.trip);
+            } else {
+                console.log(`parsed trip unexpectedly undefined`);
+            }
+        });
     }
 
     getCurrentTrips() : ITrip[] {
@@ -54,8 +70,8 @@ export class TripManager implements ITripManager {
         return pastTrips;
     }
 
-    getTripById(id: number): ITrip | null {
-        let index = this.trips.findIndex(element => element.id == id);
+    getTripById(id: string): ITrip | null {
+        let index = this.trips.findIndex(element => element.id === id);
         if (index == -1) {
             return null;
         }

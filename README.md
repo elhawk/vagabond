@@ -1,5 +1,10 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+To run the server:
+from the top directory, run npm start
+from the backend directory, run set PORT=3001 && node bin/www
+
+
 ## Available Scripts
 
 In the project directory, you can run:
