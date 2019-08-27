@@ -22,7 +22,7 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-    let userId = req.body.userId;
+    let userId = req.body.user;
 
     let trip = {
         id: req.body.id,

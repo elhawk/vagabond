@@ -3,13 +3,13 @@ import { AddItem } from '../../AddItem/AddItem';
 import { Field } from '../../AddItem/Field';
 import { IFormValues } from '../../AddItem/Form';
 
-export function AddExpenditure(props: {userName: string, tripName: string, onItemAddedCallback: (item: IFormValues) => void}) {
+export function AddExpenditure(props: {userName: string, tripName: string, tripId: string, onItemAddedCallback: (item: IFormValues) => void}) {
     return (
         <AddItem
             itemName = {"Expenditure"} 
             title={props.tripName + " Spending"}        
             action={"/expenditures/"}
-            userName={props.userName}      
+            postData={{"user": props.userName, "tripId": props.tripId}}      
             onItemAddedCallback = {props.onItemAddedCallback}
             renderFields={(onFieldChange: (e: React.FormEvent<HTMLInputElement>) => void) => (
                 <React.Fragment>

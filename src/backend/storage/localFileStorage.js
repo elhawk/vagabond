@@ -31,10 +31,17 @@ async function readTrips(user) {
     
     let trips = await readTripsOrExpenditures(filePath);
 
-    if (trips.succeeded) {
-        console.log(`read ${trips.jsonData}`);
-    }
     return trips;
+}
+
+async function readExpenditures(user, tripId) {
+    console.log(`reading expenditures for ${user}, trip ${tripId}`);
+
+    let filePath = getExpendituresFilePath(user, tripId);
+
+    let expenditures = await readTripsOrExpenditures(filePath);
+
+    return expenditures;
 }
 
 async function readTripsOrExpenditures(filePath) {
@@ -52,14 +59,34 @@ async function readTripsOrExpenditures(filePath) {
         }
     }
 
-    console.log('read file data: ' + data);
     let jsonData = JSON.parse(data);
     return { succeeded: true, jsonData: jsonData};   
+}
+
+// appends the provided expenditure to the user's set of expenditures for that trip
+async function writeExpenditure(user, trip, expenditure) {
+    console.log(`Saving expenditure ${expenditure.id} for ${user} in trip ${trip}`);
+
+    let succeeded = await appendItemToFile(getExpendituresFilePath(user, trip), expenditure);
+
+    console.log(`Saving expenditure succeeded: ${succeeded}`);
+
+    return succeeded;
 }
 
 // Appends the provided trip to the user's set of trips
 async function writeTrip(user, trip) {
     console.log(`Saving trip ${trip.id} for ${user}`);
+
+    let succeeded = await appendItemToFile(getTripsFilePath(user), trip);
+
+    console.log(`Saving trip succeeded: ${succeeded}`);
+
+    return succeeded;
+}
+
+async function appendItemToFile(filePath, itemToAppend) {
+    console.log(`Appending item to file ${filePath}`);
 
     // Make the directory, if it does not exist
     let dataDir = path.join(__dirname, FileLocation);
@@ -74,31 +101,29 @@ async function writeTrip(user, trip) {
         }
     }
 
-    let readTripsResponse;
+    let readExistingItemsResponse;
     try {
-        readTripsResponse = await readTrips(user);
+        readExistingItemsResponse = await readTripsOrExpenditures(filePath);
     } catch (err) {
-        console.log(`error reading trips ${err}`);
+        console.log(`error reading existing items ${err}`);
         return false;
     }
 
-    console.log(readTripsResponse);
-    if (!readTripsResponse.succeeded) {
+    if (!readExistingItemsResponse.succeeded) {
         return false;
     }
 
-    existingTrips = readTripsResponse.trips;
-    existingTrips.push(trip);
+    let existingItems = readExistingItemsResponse.jsonData;
+    existingItems.push(itemToAppend);
     
     try {
-        await writeFile(getTripsFilePath(user), JSON.stringify(existingTrips));
+        await writeFile(filePath, JSON.stringify(existingItems));
     } catch (err) {
-        console.log(`writeTrip error writing new trip ${err}`);
+        console.log(`appendItemToFile error writing new file ${err}`);
         return false;
     }
 
-    console.log("Trip saved");
     return true;
-} 
+}
 
-module.exports = {writeTrip, readTrips};
+module.exports = {writeTrip, readTrips, readExpenditures, writeExpenditure};

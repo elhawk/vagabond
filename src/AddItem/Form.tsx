@@ -5,7 +5,7 @@ let uuidv1 = require('uuid/v1');
 export interface IFormProps {
     action: string;
     onCancel: () => void,
-    userName: string,
+    postData: IFormValues,
     renderFields: (onFieldChangeCallback: (e: React.FormEvent<HTMLInputElement>) => void) => React.ReactNode,
     onSuccessfulPost: (addedItem: IFormValues) => void;
 }
@@ -18,15 +18,15 @@ export interface IFormValues {
 export class Form extends React.Component<IFormProps> {
     // The form values which we save off when the fields are changed.  This is not part of the 
     // element state since we don't want to rerender.
-    formValues: IFormValues = {
-        "userId": this.props.userName
-    };
+    formValues: IFormValues = {};
 
     constructor(props: IFormProps) {
         super(props);
 
         this.onFieldChange = this.onFieldChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
+        this.formValues = props.postData;
     }
 
     private async handleSubmit(e: React.FormEvent<HTMLFormElement>) : Promise<void> {

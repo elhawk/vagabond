@@ -9,7 +9,7 @@ export function AddTrip(props: {userName: string, onItemAddedCallback: (item: IF
             itemName = {"Trip"} 
             title={"Your Trips"}
             action={"/trips/"}
-            userName={props.userName}
+            postData={{"user": props.userName}}
             onItemAddedCallback = {props.onItemAddedCallback}
             renderFields={(onFieldChange: (e: React.FormEvent<HTMLInputElement>) => void) => (
                 <React.Fragment>

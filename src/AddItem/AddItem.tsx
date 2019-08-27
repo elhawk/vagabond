@@ -17,8 +17,9 @@ export interface IAddItemProps {
     // Url to post the added item to
     action: string;
 
-    // User credentials to attach to the post
-    userName: string;
+    // Data we do not want to get from the user, but still want to send on the post.  For instance, the user's credentials.
+    // In the case of expenditures, this also includes the guid ID of the trip the expenditure belongs to.
+    postData: IFormValues;
 }
 
 interface IAddItemState {
@@ -51,7 +52,7 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
                 renderFields = {this.props.renderFields}
                 onSuccessfulPost = {this.props.onItemAddedCallback}
                 onCancel = {this.resetForm}
-                userName = {this.props.userName}/>
+                postData = {this.props.postData}/>
             flexDirectionClass = "column-flex-direction";
         } else {
             formOrButton = <AddButton
