@@ -37,6 +37,7 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
 
         this.resetForm = this.resetForm.bind(this);
         this.onAddClick = this.onAddClick.bind(this);
+        this.onSuccessfulPost = this.onSuccessfulPost.bind(this);
     }
 
     render() {
@@ -50,7 +51,7 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
             formOrButton = <Form 
                 action = {this.props.action}
                 renderFields = {this.props.renderFields}
-                onSuccessfulPost = {this.props.onItemAddedCallback}
+                onSuccessfulPost = {this.onSuccessfulPost}
                 onCancel = {this.resetForm}
                 postData = {this.props.postData}/>
             flexDirectionClass = "column-flex-direction";
@@ -66,6 +67,11 @@ export class AddItem extends React.Component<IAddItemProps, IAddItemState> {
                 {formOrButton}
             </div>
         )
+    }
+
+    onSuccessfulPost(item: IFormValues) {
+        this.props.onItemAddedCallback(item);
+        this.setState({showForm: false});
     }
 
     onAddClick() {
