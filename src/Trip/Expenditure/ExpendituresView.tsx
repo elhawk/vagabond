@@ -73,6 +73,7 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
                 userName={this.props.userName}
                 onItemAddedCallback={this.onExpenditureAddedCallback} />
             <BackToTrips onCloseCallback={this.props.onCloseCallback}/>
+            <ExpendituresHeader />
             {expendituresList}
         </div>);
     }
@@ -82,9 +83,9 @@ function SingleExpenditure(expenditure: IExpenditure) {
     return (
         <div className="container line-item" key={expenditure.id}>
             <div>{expenditure.description} </div>
-            <div>Date: {expenditure.dates[0].toDateString()}</div>
-            <div>Amount: {expenditure.amount}</div>
-            <div>Category: {expenditure.category}</div>
+            <div>{expenditure.dates[0].toDateString()}</div>
+            <div>{expenditure.amount}</div>
+            <div>{expenditure.category}</div>
         </div>
     );
 }
@@ -92,5 +93,16 @@ function SingleExpenditure(expenditure: IExpenditure) {
 function BackToTrips(props: {onCloseCallback: (() => void)}) {
     return (
         <button onClick={props.onCloseCallback}>Back to Trips View</button>
+    );
+}
+
+function ExpendituresHeader() {
+    return (
+        <div className="container line-item-header line-item" key="expendituresHeader">
+            <div>Description</div>
+            <div>Date</div>
+            <div>Amount</div>
+            <div>Category</div>
+        </div>
     );
 }
