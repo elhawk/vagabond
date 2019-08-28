@@ -34,7 +34,7 @@ interface IDeleteExpenditureProps {
     expenditureId: string;
 
     // callback so the deleted item can be removed from the UI on success
-    onDeleteSucceeded: () => void;
+    onDeleteSucceeded: (expenditureId: string) => void;
 }
 
 export class DeleteExpenditureButton extends React.Component<IDeleteExpenditureProps>{
@@ -47,7 +47,7 @@ export class DeleteExpenditureButton extends React.Component<IDeleteExpenditureP
 
     deleteAction() {
         alert('send delete! todo');
-        this.props.onDeleteSucceeded();
+        this.props.onDeleteSucceeded(this.props.expenditureId);
     }
     
     render() {

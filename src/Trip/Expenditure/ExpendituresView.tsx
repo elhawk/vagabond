@@ -24,7 +24,7 @@ export class ExpendituresView extends React.Component<IExpendituresViewProps, IE
         this.state = {expenditures: [], fetchedServerExpenditures: false};
         this.onExpenditureAddedCallback = this.onExpenditureAddedCallback.bind(this);
         this.generateSingleExpenditure = this.generateSingleExpenditure.bind(this);
-        this.deleteAction = this.deleteAction.bind(this);
+        this.onDeleteSucceeded = this.onDeleteSucceeded.bind(this);
     }
 
     componentDidMount() {
@@ -64,11 +64,18 @@ export class ExpendituresView extends React.Component<IExpendituresViewProps, IE
     }
 
     generateSingleExpenditure(ex: IExpenditure) {
-        return SingleExpenditure(ex, this.props.trip.id, this.deleteAction);
+        return SingleExpenditure(ex, this.props.trip.id, this.onDeleteSucceeded);
     }
 
-    deleteAction() {
-        alert("remove from view");
+    onDeleteSucceeded(id: string) {
+        let exIndex = this.state.expenditures.findIndex(element => (element.id == id));
+        if (exIndex == -1) {
+            console.log(`onDeleteSucceeded: id ${id} does not exist in expenditure array`);
+            return;
+        }
+
+        this.state.expenditures.splice(exIndex, 1);
+        this.setState({expenditures: this.state.expenditures});
     }
 
     render() {
@@ -92,7 +99,7 @@ export class ExpendituresView extends React.Component<IExpendituresViewProps, IE
     }
 }
 
-function SingleExpenditure(expenditure: IExpenditure, tripId: string, onDeleteSucceeded: () => void) {
+function SingleExpenditure(expenditure: IExpenditure, tripId: string, onDeleteSucceeded: (id: string) => void) {
     return (
         <div className="container line-item" key={expenditure.id}>
             <div>{expenditure.description} </div>
