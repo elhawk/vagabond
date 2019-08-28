@@ -92,6 +92,27 @@ async function writeTrip(user, trip) {
 async function appendItemToFile(filePath, itemToAppend) {
     console.log(`Appending item to file ${filePath}`);
 
+    function modifier(existingItems) {
+        existingItems.push(itemToAppend);
+        return existingItems;
+    };
+
+    let succeeded = false;
+    try {
+        succeeded = await modifyFile(filePath, modifier);
+    } catch (err) {
+        console.log(`appendItemToFile error  in modifyFile ${err}`);
+        return false;
+    }
+
+    return succeeded;
+}
+
+// Reads a file (creating it if it does not exist), passes it to the provided function for modification,
+// and writes it back afterwards
+async function modifyFile(filePath, modifier) {
+    console.log(`Appending item to file ${filePath}`);
+
     // Make the directory, if it does not exist
     let dataDir = path.join(__dirname, FileLocation);
 
@@ -117,11 +138,10 @@ async function appendItemToFile(filePath, itemToAppend) {
         return false;
     }
 
-    let existingItems = readExistingItemsResponse.jsonData;
-    existingItems.push(itemToAppend);
+    let modifiedItem = modifier(readExistingItemsResponse.jsonData);
     
     try {
-        await writeFile(filePath, JSON.stringify(existingItems));
+        await writeFile(filePath, JSON.stringify(modifiedItem));
     } catch (err) {
         console.log(`appendItemToFile error writing new file ${err}`);
         return false;
