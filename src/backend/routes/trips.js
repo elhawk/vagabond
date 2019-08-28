@@ -43,4 +43,19 @@ router.post('/', async (req, res, next) => {
     res.end();
 });
 
+router.delete('/', async(req, res, next) => {
+  let userId = req.query.user;
+  let tripId = req.query.id;
+
+  let deleteSucceeded = false;
+  try {
+    deleteSucceeded = await storage.deleteTrip(userId, tripId);
+  } catch (err) {
+    console.log(`error deleting trip ${err}`);
+  }
+
+  res.status(deleteSucceeded ? 200 : 500);
+  res.end();
+});
+
 module.exports = router;

@@ -5,6 +5,7 @@ let util = require('util');
 const mkdir = util.promisify(fs.mkdir);
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
+const unlink = util.promisify(fs.unlink);
 
 const FileLocation = 'userdata';
 
@@ -63,9 +64,46 @@ async function readTripsOrExpenditures(filePath) {
     return { succeeded: true, jsonData: jsonData};   
 }
 
-async function deleteExpenditure(user, tripId, id) {
-    console.log(`deleting expenditure ${id} from trip ${tripId} for ${user}`);
+async function deleteTrip(userId, tripId) {
+    // first, remove the entry for the trip from the trips file
+    let tripsFilePath = getTripsFilePath(userId);
 
+    let removeTripSucceeded = false;
+    try {
+        removeTripSucceeded = await deleteItem(tripsFilePath, tripId);
+    } catch (err) {
+        console.log(`removing trip failed with error ${err}`);
+    }
+
+    if (!removeTripSucceeded)
+        return false;
+
+    // then, delete the expenditures file for the trip
+    let expendituresFilePath = getExpendituresFilePath(userId, tripId);
+
+    let removeFileSucceeded = false;
+    try {
+        await unlink(expendituresFilePath);
+        removeFileSucceeded = true;
+    } catch (err) {
+        if (err.code == "ENOENT") {
+            // no expenditures were ever created for this trip
+            removeFileSucceeded = true;
+        } else {
+            console.log(`removing expenditures file failed with error ${err}`);
+        }
+    }
+
+    // if removing the expenditures file fails, log about it but return success
+    // to the user since the trip will appear to be cleaned up on their side
+    if (!removeFileSucceeded) {
+        console.log('removing expenditure file failed');
+    }
+
+    return true;
+}
+
+async function deleteExpenditure(user, tripId, id) {
     let filePath = getExpendituresFilePath(user, tripId);
 
     let succeeded = false;
@@ -186,4 +224,4 @@ async function modifyFile(filePath, modifier) {
     return true;
 }
 
-module.exports = {writeTrip, readTrips, readExpenditures, writeExpenditure, deleteExpenditure};
+module.exports = {writeTrip, readTrips, readExpenditures, writeExpenditure, deleteExpenditure, deleteTrip};

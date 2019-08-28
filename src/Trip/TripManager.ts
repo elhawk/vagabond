@@ -7,6 +7,8 @@ export interface ITripManager {
     addServerTrips(trips: object[]) : void;
 
     getTripById(id: string) : ITrip | null;
+
+    removeTrip(id: string) : ITrip | null;
 }
 
 export class TripManager implements ITripManager {
@@ -78,5 +80,14 @@ export class TripManager implements ITripManager {
         else {
             return this.trips[index];
         }
+    }
+
+    removeTrip(id: string): ITrip | null {
+        let index = this.trips.findIndex(element => element.id === id);
+        if (index == -1) {
+            return null;
+        }
+
+        return this.trips.splice(index, 1)[0];
     }
 }
