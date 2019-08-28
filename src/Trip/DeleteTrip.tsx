@@ -1,29 +1,28 @@
+import { DeleteButton } from "../DeleteItem/DeleteButton";
 import React from "react";
-import { DeleteButton } from "../../DeleteItem/DeleteButton";
 
-export interface IDeleteExpenditureProps {
+interface IDeleteTripProps {
     user: string;
     tripId: string;
-    expenditureId: string;
 
     // callback so the deleted item can be removed from the UI on success
-    onDeleteSucceeded: (expenditureId: string) => void;
+    onDeleteSucceeded: (tripId: string) => void;
 }
 
-export class DeleteExpenditureButton extends React.Component<IDeleteExpenditureProps>{
+export class DeleteTripButton extends React.Component<IDeleteTripProps>{
 
-    constructor(props: IDeleteExpenditureProps) {
+    constructor(props: IDeleteTripProps) {
         super(props);
 
         this.deleteAction = this.deleteAction.bind(this);
     }
 
     deleteAction() {
-        let url = `/expenditures?id=${this.props.expenditureId}&tripId=${this.props.tripId}&user=${this.props.user}`;
+        let url = `/trips?id=${this.props.tripId}&user=${this.props.user}`;
         fetch(url, { method: 'DELETE' })
             .then(res => {
                 if (res.status == 200) {
-                    this.props.onDeleteSucceeded(this.props.expenditureId);
+                    this.props.onDeleteSucceeded(this.props.tripId);
                 } else {
                     alert('Delete failed unexpectedly');
                 }

@@ -4,6 +4,7 @@ import { TripManager } from './TripManager'
 import { ExpendituresView } from './Expenditure/ExpendituresView';
 import { AddTrip } from './AddTrip';
 import { IFormValues } from '../AddItem/Form';
+import { DeleteTripButton } from './DeleteTrip';
 
 interface ITripViewProps {
     tripManager: TripManager;
@@ -35,6 +36,7 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
         this.onItemAddedCallback = this.onItemAddedCallback.bind(this);
         this.onCloseExpendituresViewCallback = this.onCloseExpendituresViewCallback.bind(this);
         this.onTripClick = this.onTripClick.bind(this);
+        this.onTripDeleted = this.onTripDeleted.bind(this);
     }
 
     componentDidMount() {
@@ -75,9 +77,9 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
         return (
             <div>
                 <AddTrip userName={this.props.userName} onItemAddedCallback={this.onItemAddedCallback} />
-                <TripList tripName={"Current"} trips={currentTrips} onTripClick={this.onTripClick}/>
-                <TripList tripName={"Upcoming"} trips={upcomingTrips} onTripClick={this.onTripClick}/>
-                <TripList tripName={"Past"} trips={pastTrips} onTripClick={this.onTripClick}/>
+                <TripList tripName={"Current"} trips={currentTrips} onTripClick={this.onTripClick} user={this.props.userName} onTripDeleted={this.onTripDeleted}/>
+                <TripList tripName={"Upcoming"} trips={upcomingTrips} onTripClick={this.onTripClick} user={this.props.userName} onTripDeleted={this.onTripDeleted}/>
+                <TripList tripName={"Past"} trips={pastTrips} onTripClick={this.onTripClick} user={this.props.userName} onTripDeleted={this.onTripDeleted}/>
                 <br />
                 <br />
             </div>);
@@ -85,6 +87,11 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
 
     onTripClick(id: string) {
         this.setState({tripToDisplay: id});
+    }
+
+    onTripDeleted(id: string) {
+        this.props.tripManager.removeTrip(id);
+        this.setState({trips: this.props.tripManager.trips});
     }
 
     onItemAddedCallback(item: IFormValues) {
@@ -111,8 +118,10 @@ function TripsHeader() {
 }
 
 function TripList(props: {
+        user: string,
         tripName: string,
         trips: Trip[],
+        onTripDeleted: (id: string) => void,
         onTripClick: (id: string)=> void}) : JSX.Element {
     let tripsElement = [];
     if (props.trips.length == 0) {
@@ -121,7 +130,7 @@ function TripList(props: {
     } else {
         tripsElement.push(<TripsHeader />);
         for (let trip of props.trips) {
-            tripsElement.push(<SingleTrip trip={trip} onTripClick={props.onTripClick} />)
+            tripsElement.push(<SingleTrip trip={trip} onTripClick={props.onTripClick} user={props.user} onDeleteSucceeded={props.onTripDeleted}/>)
         }
     }
 
@@ -136,14 +145,17 @@ function TripList(props: {
 
 function SingleTrip(
     props: {
+        user: string,
         trip: ITrip,
+        onDeleteSucceeded: (id: string) => void,
         onTripClick: (id: string) => void}) {
     return (
-        <div className="container line-item clickable" key={props.trip.id} onClick={() => props.onTripClick(props.trip.id)}>
-            <div>{props.trip.name} </div>
+        <div className="container line-item" key={props.trip.id} >
+            <div className="clickable" onClick={() => props.onTripClick(props.trip.id)}>{props.trip.name} </div>
             <div>{props.trip.startDate.toDateString()}</div>
             <div>{props.trip.endDate.toDateString()}</div>
             <div>{"$" + props.trip.budget}</div>
+            <DeleteTripButton user={props.user} tripId={props.trip.id} onDeleteSucceeded={props.onDeleteSucceeded}/>
         </div>
     );
 }
