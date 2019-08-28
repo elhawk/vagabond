@@ -46,8 +46,15 @@ export class DeleteExpenditureButton extends React.Component<IDeleteExpenditureP
     }
 
     deleteAction() {
-        alert('send delete! todo');
-        this.props.onDeleteSucceeded(this.props.expenditureId);
+        let url = `/expenditures?id=${this.props.expenditureId}&tripId=${this.props.tripId}`;
+        fetch(url, { method: 'DELETE' })
+            .then(res => {
+                if (res.status == 200) {
+                    this.props.onDeleteSucceeded(this.props.expenditureId);
+                } else {
+                    alert('Delete failed unexpectedly');
+                }
+            });    
     }
     
     render() {

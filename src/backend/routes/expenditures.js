@@ -45,4 +45,10 @@ router.post('/', async (req, res, next) => {
     res.end();
 });
 
+router.delete('/', async(req, res, next) => {
+  // todo implement
+  res.status(200);
+  res.end();
+});
+
 module.exports = router;
