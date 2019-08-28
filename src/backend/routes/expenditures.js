@@ -46,9 +46,9 @@ router.post('/', async (req, res, next) => {
 });
 
 router.delete('/', async(req, res, next) => {
-  let expenditureId = req.body.id;
-  let tripId = req.body.tripId;
-  let user = req.body.user;
+  let expenditureId = req.query.id;
+  let tripId = req.query.tripId;
+  let user = req.query.user;
 
   let deleteSucceeded = false;
   try {
