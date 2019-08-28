@@ -3,7 +3,7 @@ import { ITrip } from "../trip";
 import { AddExpenditure } from "./AddExpenditure";
 import { IFormValues } from "../../AddItem/Form";
 import { IExpenditure, parseExpenditure } from "./Expenditure";
-import { DeleteExpenditureButton } from "../../DeleteItem/DeleteButton";
+import { DeleteExpenditureButton } from "./DeleteExpenditure";
 
 interface IExpendituresViewProps {
     trip: ITrip;
