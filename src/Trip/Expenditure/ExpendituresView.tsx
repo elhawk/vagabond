@@ -3,6 +3,7 @@ import { ITrip } from "../trip";
 import { AddExpenditure } from "./AddExpenditure";
 import { IFormValues } from "../../AddItem/Form";
 import { IExpenditure, parseExpenditure } from "./Expenditure";
+import { DeleteExpenditureButton } from "../../DeleteItem/DeleteButton";
 
 interface IExpendituresViewProps {
     trip: ITrip;
@@ -15,13 +16,15 @@ interface IExpendituresViewState {
     fetchedServerExpenditures: boolean;
 }
 
-export class TripExpenditures extends React.Component<IExpendituresViewProps, IExpendituresViewState>{
+export class ExpendituresView extends React.Component<IExpendituresViewProps, IExpendituresViewState>{
     
     constructor(props: IExpendituresViewProps) {
         super(props);
 
         this.state = {expenditures: [], fetchedServerExpenditures: false};
         this.onExpenditureAddedCallback = this.onExpenditureAddedCallback.bind(this);
+        this.generateSingleExpenditure = this.generateSingleExpenditure.bind(this);
+        this.onDeleteSucceeded = this.onDeleteSucceeded.bind(this);
     }
 
     componentDidMount() {
@@ -60,32 +63,50 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
         }
     }
 
+    generateSingleExpenditure(ex: IExpenditure) {
+        return SingleExpenditure(ex, this.props.trip.id, this.props.userName, this.onDeleteSucceeded);
+    }
+
+    onDeleteSucceeded(id: string) {
+        let exIndex = this.state.expenditures.findIndex(element => (element.id == id));
+        if (exIndex == -1) {
+            console.log(`onDeleteSucceeded: id ${id} does not exist in expenditure array`);
+            return;
+        }
+
+        this.state.expenditures.splice(exIndex, 1);
+        this.setState({expenditures: this.state.expenditures});
+    }
+
     render() {
         let expendituresList;
         if (this.state.expenditures.length != 0) {
-            expendituresList = this.state.expenditures.map(SingleExpenditure);
+            expendituresList = this.state.expenditures.map(this.generateSingleExpenditure);
         }
         return (
-        <div>
-            <AddExpenditure 
-                tripName={this.props.trip.name}
-                tripId={this.props.trip.id}        
-                userName={this.props.userName}
-                onItemAddedCallback={this.onExpenditureAddedCallback} />
-            <BackToTrips onCloseCallback={this.props.onCloseCallback}/>
-            <ExpendituresHeader />
-            {expendituresList}
-        </div>);
+            <div>
+                <AddExpenditure 
+                    tripName={this.props.trip.name}
+                    tripId={this.props.trip.id}        
+                    userName={this.props.userName}
+                    onItemAddedCallback={this.onExpenditureAddedCallback} />
+                <BackToTrips onCloseCallback={this.props.onCloseCallback}/>
+                <ExpendituresHeader />
+                {expendituresList}
+                <br />
+                <br />
+            </div>);
     }
 }
 
-function SingleExpenditure(expenditure: IExpenditure) {
+function SingleExpenditure(expenditure: IExpenditure, tripId: string, userName: string, onDeleteSucceeded: (id: string) => void) {
     return (
         <div className="container line-item" key={expenditure.id}>
             <div>{expenditure.description} </div>
             <div>{expenditure.dates[0].toDateString()}</div>
             <div>{expenditure.amount}</div>
             <div>{expenditure.category}</div>
+            <DeleteExpenditureButton onDeleteSucceeded={onDeleteSucceeded} expenditureId={expenditure.id} tripId={tripId} user={userName}/>
         </div>
     );
 }

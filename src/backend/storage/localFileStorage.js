@@ -63,6 +63,45 @@ async function readTripsOrExpenditures(filePath) {
     return { succeeded: true, jsonData: jsonData};   
 }
 
+async function deleteExpenditure(user, tripId, id) {
+    console.log(`deleting expenditure ${id} from trip ${tripId} for ${user}`);
+
+    let filePath = getExpendituresFilePath(user, tripId);
+
+    let succeeded = false;
+    try {
+        succeeded = await deleteItem(filePath, id);
+    } catch (err) {
+        console.log(`error in deleteItem ${err}`);
+    }
+
+    return succeeded;
+}
+
+async function deleteItem(filePath, id) {
+
+    function deleteItemById(items) {
+        let itemIndex = items.findIndex((element) => element.id == id);
+
+        if (itemIndex == -1) {
+            console.log(`unable to find item ${id} to delete -- but it's already gone so return success`);
+            return {succeeded: true, items: items};
+        }
+
+        items.splice(itemIndex, 1);
+        return {succeeded: true, items: items};
+    }
+
+    let succeeded = false;
+    try {
+        succeeded = await modifyFile(filePath, deleteItemById);
+    } catch (err) {
+        console.log(`unexpected error deleting item ${err}`);
+    }
+
+    return succeeded;
+}
+
 // appends the provided expenditure to the user's set of expenditures for that trip
 async function writeExpenditure(user, trip, expenditure) {
     console.log(`Saving expenditure ${expenditure.id} for ${user} in trip ${trip}`);
@@ -88,6 +127,25 @@ async function writeTrip(user, trip) {
 async function appendItemToFile(filePath, itemToAppend) {
     console.log(`Appending item to file ${filePath}`);
 
+    function modifier(items) {
+        items.push(itemToAppend);
+        return {items: items, succeeded: true};
+    };
+
+    let succeeded = false;
+    try {
+        succeeded = await modifyFile(filePath, modifier);
+    } catch (err) {
+        console.log(`appendItemToFile error  in modifyFile ${err}`);
+        return false;
+    }
+
+    return succeeded;
+}
+
+// Reads a file (creating it if it does not exist), passes it to the provided function for modification,
+// and writes it back afterwards
+async function modifyFile(filePath, modifier) {
     // Make the directory, if it does not exist
     let dataDir = path.join(__dirname, FileLocation);
 
@@ -113,17 +171,19 @@ async function appendItemToFile(filePath, itemToAppend) {
         return false;
     }
 
-    let existingItems = readExistingItemsResponse.jsonData;
-    existingItems.push(itemToAppend);
+    let modifyResult = modifier(readExistingItemsResponse.jsonData);
+    if (!modifyResult.succeeded) {
+        return false;
+    }
     
     try {
-        await writeFile(filePath, JSON.stringify(existingItems));
+        await writeFile(filePath, JSON.stringify(modifyResult.items));
     } catch (err) {
-        console.log(`appendItemToFile error writing new file ${err}`);
+        console.log(`modifyFile error writing new file ${err}`);
         return false;
     }
 
     return true;
 }
 
-module.exports = {writeTrip, readTrips, readExpenditures, writeExpenditure};
+module.exports = {writeTrip, readTrips, readExpenditures, writeExpenditure, deleteExpenditure};

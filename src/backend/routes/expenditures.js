@@ -45,4 +45,20 @@ router.post('/', async (req, res, next) => {
     res.end();
 });
 
+router.delete('/', async(req, res, next) => {
+  let expenditureId = req.query.id;
+  let tripId = req.query.tripId;
+  let user = req.query.user;
+
+  let deleteSucceeded = false;
+  try {
+    deleteSucceeded = await storage.deleteExpenditure(user, tripId, expenditureId);
+  } catch (err) {
+    console.log(`error deleting expenditure ${err}`);
+  }
+
+  res.status(deleteSucceeded ? 200 : 500);
+  res.end();
+});
+
 module.exports = router;

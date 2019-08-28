@@ -1,7 +1,7 @@
 import React from 'react';
 import { ITrip, Trip } from './trip';
 import { TripManager } from './TripManager'
-import { TripExpenditures } from './Expenditure/ExpendituresView';
+import { ExpendituresView } from './Expenditure/ExpendituresView';
 import { AddTrip } from './AddTrip';
 import { IFormValues } from '../AddItem/Form';
 
@@ -56,7 +56,7 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
             // Display single trip view
             let tripToDisplay: Trip | null = this.props.tripManager.getTripById(this.state.tripToDisplay);
             if (tripToDisplay != null) {
-                return <TripExpenditures
+                return <ExpendituresView
                     trip={tripToDisplay}
                     onCloseCallback={this.onCloseExpendituresViewCallback}
                     userName={this.props.userName}/>
@@ -129,6 +129,7 @@ function TripList(props: {
         <div className="container trips-list">
             <h3> {props.tripName} Trips </h3>
             {tripsElement}
+            <br />
         </div>
     );
 }
