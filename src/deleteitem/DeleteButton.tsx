@@ -14,7 +14,7 @@ class DeleteButton extends React.Component<IDeleteButtonProps> {
 
     render() {
         return (
-            <div onClick={this.onDeleteClicked}>
+            <div onClick={this.onDeleteClicked} className={"clickable"}>
                 <img src={require("./trash-can-24.png")} alt="delete" />
             </div>);
     }
