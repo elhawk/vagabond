@@ -63,6 +63,10 @@ async function readTripsOrExpenditures(filePath) {
     return { succeeded: true, jsonData: jsonData};   
 }
 
+async function deleteTrip(userId, tripId) {
+    return true;
+}
+
 async function deleteExpenditure(user, tripId, id) {
     console.log(`deleting expenditure ${id} from trip ${tripId} for ${user}`);
 
@@ -186,4 +190,4 @@ async function modifyFile(filePath, modifier) {
     return true;
 }
 
-module.exports = {writeTrip, readTrips, readExpenditures, writeExpenditure, deleteExpenditure};
+module.exports = {writeTrip, readTrips, readExpenditures, writeExpenditure, deleteExpenditure, deleteTrip};
