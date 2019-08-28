@@ -22,7 +22,6 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-    console.log(req.body);
     let userId = req.body.user;
     let tripId = req.body.tripId;
 
@@ -34,8 +33,6 @@ router.post('/', async (req, res, next) => {
         category: req.body.category,
         location: req.body.location
     }
-
-    console.log(expenditure);
 
     let writeSucceeded = false;
     try {

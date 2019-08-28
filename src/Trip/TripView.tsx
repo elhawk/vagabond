@@ -78,6 +78,8 @@ export class TripView extends React.Component<ITripViewProps, ITripViewState> {
                 <TripList tripName={"Current"} trips={currentTrips} onTripClick={this.onTripClick}/>
                 <TripList tripName={"Upcoming"} trips={upcomingTrips} onTripClick={this.onTripClick}/>
                 <TripList tripName={"Past"} trips={pastTrips} onTripClick={this.onTripClick}/>
+                <br />
+                <br />
             </div>);
     }
 
