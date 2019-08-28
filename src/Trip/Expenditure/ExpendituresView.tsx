@@ -3,6 +3,7 @@ import { ITrip } from "../trip";
 import { AddExpenditure } from "./AddExpenditure";
 import { IFormValues } from "../../AddItem/Form";
 import { IExpenditure, parseExpenditure } from "./Expenditure";
+import { DeleteButton } from "../DeleteButton";
 
 interface IExpendituresViewProps {
     trip: ITrip;
@@ -88,6 +89,7 @@ function SingleExpenditure(expenditure: IExpenditure) {
             <div>{expenditure.dates[0].toDateString()}</div>
             <div>{expenditure.amount}</div>
             <div>{expenditure.category}</div>
+            <DeleteButton />
         </div>
     );
 }
