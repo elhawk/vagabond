@@ -129,6 +129,7 @@ function TripList(props: {
         <div className="container trips-list">
             <h3> {props.tripName} Trips </h3>
             {tripsElement}
+            <br />
         </div>
     );
 }

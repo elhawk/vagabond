@@ -75,6 +75,8 @@ export class TripExpenditures extends React.Component<IExpendituresViewProps, IE
             <BackToTrips onCloseCallback={this.props.onCloseCallback}/>
             <ExpendituresHeader />
             {expendituresList}
+            <br />
+            <br />
         </div>);
     }
 }
