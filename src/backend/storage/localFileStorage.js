@@ -63,6 +63,10 @@ async function readTripsOrExpenditures(filePath) {
     return { succeeded: true, jsonData: jsonData};   
 }
 
+async function deleteExpenditure(user, tripId, id) {
+    return true;
+}
+
 // appends the provided expenditure to the user's set of expenditures for that trip
 async function writeExpenditure(user, trip, expenditure) {
     console.log(`Saving expenditure ${expenditure.id} for ${user} in trip ${trip}`);
@@ -126,4 +130,4 @@ async function appendItemToFile(filePath, itemToAppend) {
     return true;
 }
 
-module.exports = {writeTrip, readTrips, readExpenditures, writeExpenditure};
+module.exports = {writeTrip, readTrips, readExpenditures, writeExpenditure, deleteExpenditure};

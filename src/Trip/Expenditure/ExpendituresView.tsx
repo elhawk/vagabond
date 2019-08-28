@@ -64,7 +64,7 @@ export class ExpendituresView extends React.Component<IExpendituresViewProps, IE
     }
 
     generateSingleExpenditure(ex: IExpenditure) {
-        return SingleExpenditure(ex, this.props.trip.id, this.onDeleteSucceeded);
+        return SingleExpenditure(ex, this.props.trip.id, this.props.userName, this.onDeleteSucceeded);
     }
 
     onDeleteSucceeded(id: string) {
@@ -99,14 +99,14 @@ export class ExpendituresView extends React.Component<IExpendituresViewProps, IE
     }
 }
 
-function SingleExpenditure(expenditure: IExpenditure, tripId: string, onDeleteSucceeded: (id: string) => void) {
+function SingleExpenditure(expenditure: IExpenditure, tripId: string, userName: string, onDeleteSucceeded: (id: string) => void) {
     return (
         <div className="container line-item" key={expenditure.id}>
             <div>{expenditure.description} </div>
             <div>{expenditure.dates[0].toDateString()}</div>
             <div>{expenditure.amount}</div>
             <div>{expenditure.category}</div>
-            <DeleteExpenditureButton onDeleteSucceeded={onDeleteSucceeded} expenditureId={expenditure.id} tripId={tripId} />
+            <DeleteExpenditureButton onDeleteSucceeded={onDeleteSucceeded} expenditureId={expenditure.id} tripId={tripId} user={userName}/>
         </div>
     );
 }

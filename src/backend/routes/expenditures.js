@@ -46,8 +46,18 @@ router.post('/', async (req, res, next) => {
 });
 
 router.delete('/', async(req, res, next) => {
-  // todo implement
-  res.status(200);
+  let expenditureId = req.body.id;
+  let tripId = req.body.tripId;
+  let user = req.body.user;
+
+  let deleteSucceeded = false;
+  try {
+    deleteSucceeded = await storage.deleteExpenditure(user, tripId, expenditureId);
+  } catch (err) {
+    console.log(`error deleting expenditure ${err}`);
+  }
+
+  res.status(deleteSucceeded ? 200 : 500);
   res.end();
 });
 

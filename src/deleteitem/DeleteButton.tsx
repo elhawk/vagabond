@@ -29,8 +29,8 @@ class DeleteButton extends React.Component<IDeleteButtonProps> {
 }
 
 interface IDeleteExpenditureProps {
+    user: string;
     tripId: string;
-
     expenditureId: string;
 
     // callback so the deleted item can be removed from the UI on success
@@ -46,7 +46,7 @@ export class DeleteExpenditureButton extends React.Component<IDeleteExpenditureP
     }
 
     deleteAction() {
-        let url = `/expenditures?id=${this.props.expenditureId}&tripId=${this.props.tripId}`;
+        let url = `/expenditures?id=${this.props.expenditureId}&tripId=${this.props.tripId}&user=${this.props.user}`;
         fetch(url, { method: 'DELETE' })
             .then(res => {
                 if (res.status == 200) {
